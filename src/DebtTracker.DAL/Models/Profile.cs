@@ -1,4 +1,5 @@
 ﻿using DebtTracker.Common.Interfaces;
+using System.Collections.Generic;
 
 namespace DebtTracker.DAL.Models
 {
@@ -43,5 +44,25 @@ namespace DebtTracker.DAL.Models
         /// Profile email.
         /// </summary>
         public string Email { get; set; }
+
+        /// <summary>
+        /// Navigation to GroupProfile.
+        /// </summary>
+        public ICollection<GroupProfiles> GroupsProfiles { get; set; }
+
+        /// <summary>
+        /// Navigation to TransactionProfiles.
+        /// </summary>
+        public ICollection<TransactionProfiles> TransactionsProfiles { get; set; }
+
+        /// <summary>
+        /// Navigation to Transactions.
+        /// </summary>
+        public ICollection<Transactions> Transactions { get; set; }
+
+        /// <summary>
+        /// Navigation to Transactions.
+        /// </summary>
+        public ICollection<Groups> Groups { get; set; }
     }
 }

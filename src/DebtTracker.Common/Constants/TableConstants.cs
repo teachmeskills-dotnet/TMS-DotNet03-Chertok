@@ -23,7 +23,7 @@
         /// <summary>
         /// Group Users.
         /// </summary>
-        public const string GroupUsers = nameof(GroupUsers);
+        public const string GroupProfiles = nameof(GroupProfiles);
 
         /// <summary>
         /// Transaction Users.

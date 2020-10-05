@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DebtTracker.Common.Constants
+﻿namespace DebtTracker.Common.Constants
 {
     /// <summary>
     /// Configuration contants.

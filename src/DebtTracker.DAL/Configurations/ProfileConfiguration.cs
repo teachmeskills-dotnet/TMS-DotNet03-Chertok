@@ -31,10 +31,6 @@ namespace DebtTracker.DAL.Configurations
             builder.Property(profile => profile.MiddleName)
                 .HasMaxLength(ConfigurationContants.SqlMaxLengthMedium);
 
-            builder.Property(profile => profile.Phone)
-                .IsRequired()
-                .HasMaxLength(ConfigurationContants.SqlMaxLengthMedium);
-
 
             builder.HasOne(profile => profile.User)
                 .WithOne(user => user.Profile)

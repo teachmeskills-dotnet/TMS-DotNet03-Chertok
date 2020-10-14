@@ -1,3 +1,5 @@
+using DebtTracker.BLL.Repository;
+using DebtTracker.Common.Interfaces;
 using DebtTracker.DAL.Context;
 using DebtTracker.DAL.Models;
 using Microsoft.AspNetCore.Builder;
@@ -21,6 +23,10 @@ namespace DebtTracker.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // Repository pattern (Generic)
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
             services.AddDbContext<DebtTrackerContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DebtTrackerDatabase")));
 

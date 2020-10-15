@@ -1,5 +1,8 @@
 ﻿namespace DebtTracker.Web.ViewModels
 {
+    /// <summary>
+    /// Profile model
+    /// </summary>
     public class ProfileViewModel
     {
         /// <summary>

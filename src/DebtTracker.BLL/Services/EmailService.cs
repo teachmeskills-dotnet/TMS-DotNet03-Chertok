@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DebtTracker.BLL.Services
 {
-
+    /// <inheritdoc cref="IEmailService<T>"/>
     public class EmailService : IEmailService
     {
         public async Task SendEmailAsync(string email, string subject, string message)

@@ -3,15 +3,15 @@
 namespace DebtTracker.Web.ViewModels
 {
     /// <summary>
-    /// Model email
+    /// Models for request in new passord
     /// </summary>
-    public class RequestEmailViewModels
+    public class ForgotPasswordViewModel
     {
         /// <summary>
-        /// User name
+        /// Email
         /// </summary>
         [Required]
-        [Display(Name = "Логин")]
-        public string UserName { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
     }
 }

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace DebtTracker.Web.Controllers
 {
+    /// <summary>
+    /// Control user accounts
+    /// </summary>
     public class AccountController : Controller
     {
         
@@ -16,6 +19,12 @@ namespace DebtTracker.Web.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailService _emailService;
 
+        /// <summary>
+        /// Сonstructor
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
+        /// <param name="emailService"></param>
         public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
@@ -23,11 +32,21 @@ namespace DebtTracker.Web.Controllers
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
         }
 
+        /// <summary>
+        /// Register model
+        /// </summary>
+        /// <returns>Register View</returns>
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
+
+        /// <summary>
+        /// Register
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Confirm email view</returns>
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -35,12 +54,10 @@ namespace DebtTracker.Web.Controllers
             {
                 var user = new User { Email = model.Email, PhoneNumber = model.PhoneNumber, UserName = model.UserName };
 
-                // add user
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    // генерация токена для пользователя
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action(
                         "ConfirmEmail",
@@ -64,6 +81,12 @@ namespace DebtTracker.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Confirm Email
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="code"></param>
+        /// <returns>Error view</returns>
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
@@ -84,12 +107,22 @@ namespace DebtTracker.Web.Controllers
                 return View("Error");
         }
 
+        /// <summary>
+        /// Login model
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns>Login view</returns>
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
             return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
 
+        /// <summary>
+        /// Login
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Login result</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -99,7 +132,6 @@ namespace DebtTracker.Web.Controllers
                 var user = await _userManager.FindByNameAsync(model.UserName);
                 if (user != null)
                 {
-                    // проверяем, подтвержден ли email
                     if (!await _userManager.IsEmailConfirmedAsync(user))
                     {
                         ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
@@ -127,15 +159,22 @@ namespace DebtTracker.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Logout
+        /// </summary>
+        /// <returns>Home view</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            // удаляем аутентификационные куки
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 
+        /// <summary>
+        /// Change password model
+        /// </summary>
+        /// <returns>User model</returns>
         public async Task<IActionResult> ChangePassword()
         {
             var username = HttpContext.User.Identity.Name;
@@ -148,6 +187,11 @@ namespace DebtTracker.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Change passord
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Change password result</returns>
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
@@ -180,11 +224,21 @@ namespace DebtTracker.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Request email 
+        /// </summary>
+        /// <returns></returns>
         public IActionResult RequestEmail()
         {
             return View();
         }
 
+
+        /// <summary>
+        /// Request email
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Resalt sending email</returns>
         [HttpPost]
         public async Task<IActionResult> RequestEmail(RequestEmailViewModels model)
         {
@@ -205,6 +259,90 @@ namespace DebtTracker.Web.Controllers
 
                 return Content("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
 
+            }
+            return View(model);
+        }
+
+        /// <summary>
+        /// Forgote password model
+        /// </summary>
+        /// <returns>Viwe from password request</returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Request password recovery
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Result password recovery</returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    return View("ForgotPasswordConfirmation");
+                }
+
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", 
+                    "Account",
+                    new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+
+                await _emailService.SendEmailAsync(model.Email, "Reset Password",
+                    $"Для сброса пароля пройдите по ссылке: <a href='{callbackUrl}'>link</a>");
+                return View("ForgotPasswordConfirmation");
+            }
+            return View(model);
+        }
+
+        /// <summary>
+        /// Reset password model
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns>Return view reset password</returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string code = null)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+        /// <summary>
+        /// Reset password
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns> Reset password result</returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return View("ResetPasswordConfirmation");
+            }
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return View("ResetPasswordConfirmation");
+            }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
             }
             return View(model);
         }

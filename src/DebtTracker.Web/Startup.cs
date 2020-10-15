@@ -25,7 +25,6 @@ namespace DebtTracker.Web
         public void ConfigureServices(IServiceCollection services)
         {
 
-            // Repository pattern (Generic)
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IEmailService, EmailService>();
             services.AddDbContext<DebtTrackerContext>(options =>

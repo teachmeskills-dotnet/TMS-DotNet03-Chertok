@@ -9,4 +9,12 @@
     <ProjectReference Include="..\DebtTracker.DAL\DebtTracker.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Managers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.9.0" />
+  </ItemGroup>
+
 </Project>

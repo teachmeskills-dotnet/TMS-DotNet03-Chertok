@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewData["Title"] = "Index page";
+}
+
+<h1>Index page</h1>
+
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>@User.Identity.Name</p>
+    
+        <a class="btn btn-sm btn-primary" asp-controller="Account" asp-action="ChangePassword" >Изменить</a>
+    
+       
+        <form method="post" asp-controller="Account" asp-action="Logout">
+            <button type="submit">Выход</button>
+        </form>
+        }
+        else
+        {
+        <a asp-controller="Account" asp-action="Login">Войти</a>
+        <a asp-controller="Account" asp-action="Register">Зарегистрироваться</a>
+        }

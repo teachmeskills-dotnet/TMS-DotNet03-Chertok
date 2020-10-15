@@ -36,16 +36,6 @@ namespace DebtTracker.DAL.Models
         public string MiddleName { get; set; }
 
         /// <summary>
-        /// Profile phone.
-        /// </summary>
-        public string Phone { get; set; }
-
-        /// <summary>
-        /// Profile email.
-        /// </summary>
-        public string Email { get; set; }
-
-        /// <summary>
         /// Navigation to GroupProfile.
         /// </summary>
         public ICollection<GroupProfiles> GroupsProfiles { get; set; }

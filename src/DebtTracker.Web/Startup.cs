@@ -1,13 +1,13 @@
+using DebtTracker.BLL.Repository;
+using DebtTracker.BLL.Services;
+using DebtTracker.Common.Interfaces;
 using DebtTracker.DAL.Context;
 using DebtTracker.DAL.Models;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System;
 
 
@@ -24,6 +24,9 @@ namespace DebtTracker.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IEmailService, EmailService>();
             services.AddDbContext<DebtTrackerContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DebtTrackerDatabase")));
 
@@ -31,23 +34,27 @@ namespace DebtTracker.Web
                 .AddEntityFrameworkStores<DebtTrackerContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddControllersWithViews();
+
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseDeveloperExceptionPage();
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseAuthentication();    // add autentification
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

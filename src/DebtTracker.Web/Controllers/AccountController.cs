@@ -1,5 +1,7 @@
-﻿using DebtTracker.DAL.Models;
+﻿using DebtTracker.Common.Interfaces;
+using DebtTracker.DAL.Models;
 using DebtTracker.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,11 +14,13 @@ namespace DebtTracker.Web.Controllers
         
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IEmailService _emailService;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+            _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
         }
 
         [HttpGet]
@@ -36,9 +40,18 @@ namespace DebtTracker.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                    // add cookies
-                    await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
+                    // генерация токена для пользователя
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Account",
+                        new { userId = user.Id, code = code },
+                        protocol: HttpContext.Request.Scheme);
+                    
+                    await _emailService.SendEmailAsync(model.Email, "Confirm your account",
+                        $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+
+                    return Content("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
                 }
                 else
                 {
@@ -49,6 +62,26 @@ namespace DebtTracker.Web.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return View("Error");
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+                return RedirectToAction("Index", "Home");
+            else
+                return View("Error");
         }
 
         [HttpGet]
@@ -63,6 +96,16 @@ namespace DebtTracker.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.FindByNameAsync(model.UserName);
+                if (user != null)
+                {
+                    // проверяем, подтвержден ли email
+                    if (!await _userManager.IsEmailConfirmedAsync(user))
+                    {
+                        ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
+                        return View(model);
+                    }
+                }
                 var result =
                     await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
@@ -133,6 +176,35 @@ namespace DebtTracker.Web.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "Пользователь не найден");
                 }
+            }
+            return View(model);
+        }
+
+        public IActionResult RequestEmail()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RequestEmail(RequestEmailViewModels model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(model.UserName);
+
+                // генерация токена для пользователя
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var callbackUrl = Url.Action(
+                    "ConfirmEmail",
+                    "Account",
+                    new { userId = user.Id, code = code },
+                    protocol: HttpContext.Request.Scheme);
+
+                await _emailService.SendEmailAsync(user.Email, "Confirm your account",
+                    $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+
+                return Content("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
+
             }
             return View(model);
         }

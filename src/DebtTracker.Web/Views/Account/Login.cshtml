@@ -22,7 +22,12 @@
         <input type="submit" value="Войти" />
     </div>
     <div>
+     
+        @if (Model.EmailConfigm == true)
+        {
         <a asp-controller="Account" asp-action="RequestEmail">Запрос подтверждения Email</a>
+        }
+        
         <a asp-controller="Account" asp-action="ForgotPassword">Восстановление пароля</a>
     </div>
 </form>

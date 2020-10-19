@@ -130,10 +130,14 @@ namespace DebtTracker.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.UserName);
+                //var configmed = user.EmailConfirmed;
+                //model.EmailConfigm = configmed;
+                //model.EmailConfigm = true;
                 if (user != null)
                 {
                     if (!await _userManager.IsEmailConfirmedAsync(user))
                     {
+                        model.EmailConfigm = true;
                         ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
                         return View(model);
                     }

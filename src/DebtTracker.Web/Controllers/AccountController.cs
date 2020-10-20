@@ -1,4 +1,6 @@
-﻿using DebtTracker.Common.Interfaces;
+﻿using DebtTracker.BLL.Interfaces;
+using DebtTracker.BLL.Models;
+using DebtTracker.Common.Interfaces;
 using DebtTracker.DAL.Models;
 using DebtTracker.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -18,6 +20,7 @@ namespace DebtTracker.Web.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailService _emailService;
+        private readonly IProfileService _profileService;
 
         /// <summary>
         /// Сonstructor
@@ -25,11 +28,12 @@ namespace DebtTracker.Web.Controllers
         /// <param name="userManager"></param>
         /// <param name="signInManager"></param>
         /// <param name="emailService"></param>
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService, IProfileService profileService)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
+            _profileService = profileService ?? throw new ArgumentNullException(nameof(profileService));
         }
 
         /// <summary>
@@ -55,9 +59,16 @@ namespace DebtTracker.Web.Controllers
                 var user = new User { Email = model.Email, PhoneNumber = model.PhoneNumber, UserName = model.UserName };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
+                
 
                 if (result.Succeeded)
                 {
+                    var profile = new ProfileDto()
+                    {
+                        UserId = user.Id
+                    };
+
+                    await _profileService.AddAsync(profile);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action(
                         "ConfirmEmail",

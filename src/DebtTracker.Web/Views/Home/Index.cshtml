@@ -9,16 +9,17 @@
 @if (User.Identity.IsAuthenticated)
 {
     <p>@User.Identity.Name</p>
-    
-        <a class="btn btn-sm btn-primary" asp-controller="Account" asp-action="ChangePassword" >Изменить</a>
-    
-       
-        <form method="post" asp-controller="Account" asp-action="Logout">
-            <button type="submit">Выход</button>
-        </form>
-        }
-        else
-        {
-        <a asp-controller="Account" asp-action="Login">Войти</a>
-        <a asp-controller="Account" asp-action="Register">Зарегистрироваться</a>
-        }
+    <p>Добро пожаловать в приложение DebtTracker</p>
+    <a asp-controller="Profile" asp-action="Profile">Перейти к профилю</a>
+    <a class="btn btn-sm btn-primary" asp-controller="Account" asp-action="ChangePassword">Изменить</a>
+
+
+    <form method="post" asp-controller="Account" asp-action="Logout">
+        <button type="submit">Выход</button>
+    </form>
+}
+else
+{
+    <a asp-controller="Account" asp-action="Login">Войти</a>
+    <a asp-controller="Account" asp-action="Register">Зарегистрироваться</a>
+}

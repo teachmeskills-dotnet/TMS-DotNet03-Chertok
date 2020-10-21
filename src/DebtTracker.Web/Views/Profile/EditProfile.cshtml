@@ -1,0 +1,23 @@
+﻿@model ProfileViewModel
+
+<h2>Вход в приложение</h2>
+<form method="post" asp-controller="Profile" asp-action="EditProfile">
+    <div>
+        <label asp-for="LastName"></label><br />
+        <input asp-for="LastName" />
+        <span asp-validation-for="LastName"></span>
+    </div>
+    <div>
+        <label asp-for="FirstName"></label><br />
+        <input asp-for="FirstName" />
+        <span asp-validation-for="FirstName"></span>
+    </div>
+    <div>
+        <label asp-for="MiddleName"></label><br />
+        <input asp-for="MiddleName" />
+        <span asp-validation-for="MiddleName"></span>
+    </div>
+    <div>
+        <input type="submit" value="Сохранить" />
+    </div>
+</form>

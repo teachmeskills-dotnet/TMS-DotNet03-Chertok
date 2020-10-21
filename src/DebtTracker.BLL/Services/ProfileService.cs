@@ -2,6 +2,7 @@
 using DebtTracker.BLL.Models;
 using DebtTracker.Common.Interfaces;
 using DebtTracker.DAL.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace DebtTracker.BLL.Services
 {
+    /// <inheritdoc cref="IProfileService<T>"/>
     public class ProfileService : IProfileService
     {
         private readonly IRepository<Profile> _repository;
@@ -48,7 +50,7 @@ namespace DebtTracker.BLL.Services
             editProfile.MiddleName = profile.MiddleName;
             editProfile.LastName = profile.LastName;
             _repository.Update(editProfile);
-            await _repository.SaveChangesAsync();
+            await _repository.SaveChangesAsync();            
         }
 
         public async Task<ProfileDto> GetProfileByUserId(string userId)

@@ -1,0 +1,16 @@
+﻿@model ProfileViewModel
+
+
+<form method="post" asp-controller="Profile" asp-action="ChangePhoneNumber">
+    <div>
+     <p>@Model.Phone</p>
+    </div>
+    <div>
+        <label asp-for="Phone"></label><br />
+        <input asp-for="Phone" />
+        <span asp-validation-for="Phone"></span>
+    </div>
+    <div>
+        <input type="submit" value="Сохранить" />
+    </div>
+</form>

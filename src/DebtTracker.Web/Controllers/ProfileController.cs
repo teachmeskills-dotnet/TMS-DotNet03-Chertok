@@ -106,12 +106,11 @@ namespace DebtTracker.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePhoneNumber(ProfileViewModel number)
         {
-            var username = User.Identity.Name;
-            var user = await _userManager.FindByNameAsync(username);
-
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            
                 user.PhoneNumber = number.Phone;
-                var model = await _userManager.UpdateAsync(user);
-                return View(model);
+            await _userManager.UpdateAsync(user);
+            return RedirectToAction("Profile");
         }
     }
 }

@@ -1,0 +1,16 @@
+﻿@model ProfileViewModel
+
+
+<form method="post" asp-controller="Profile" asp-action="ChangeEmail">
+    <div>
+        <p>@Model.Email</p>
+    </div>
+    <div>
+        <label asp-for="Email"></label><br />
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <input type="submit" value="Сохранить" />
+    </div>
+</form>

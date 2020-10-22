@@ -29,5 +29,10 @@
         /// User Email
         /// </summary>
         public string Email { get; set; }
+
+        /// <summary>
+        /// Status email
+        /// </summary>
+        public bool EmailConfigm { get; set; }
     }
 }

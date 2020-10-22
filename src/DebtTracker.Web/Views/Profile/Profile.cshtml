@@ -16,9 +16,13 @@
     </div>
     <div>
         <p>@Model.Email</p>
+        @if (!Model.EmailConfigm) {
+          <p>Email не подтвержден</p>
+        }
     </div>
     <div>
         <a asp-controller="Profile" asp-action="EditProfile">Изменить профиль</a>
         <a asp-controller="Profile" asp-action="ChangePhoneNumber">Изменить номер телефона</a>
+        <a asp-controller="Profile" asp-action="ChangeEmail">Изменить email</a>
     </div>
 </form>

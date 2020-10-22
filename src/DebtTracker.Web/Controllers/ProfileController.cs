@@ -1,5 +1,6 @@
 ﻿using DebtTracker.BLL.Interfaces;
 using DebtTracker.BLL.Models;
+using DebtTracker.Common.Interfaces;
 using DebtTracker.DAL.Models;
 using DebtTracker.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +18,7 @@ namespace DebtTracker.Web.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IProfileService _profileService;
+        private readonly IEmailService _emailService;
 
         /// <summary>
         /// Constructor
@@ -24,10 +26,11 @@ namespace DebtTracker.Web.Controllers
         /// <param name="userManager"></param>
         /// <param name="signInManager"></param>
         /// <param name="profileService"></param>
-        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IProfileService profileService)
+        public ProfileController(UserManager<User> userManager, IProfileService profileService, IEmailService emailService)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _profileService = profileService ?? throw new ArgumentNullException(nameof(profileService));
+            _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
         }
 
         /// <summary>
@@ -41,7 +44,7 @@ namespace DebtTracker.Web.Controllers
             var username = User.Identity.Name;
             var user = await _userManager.FindByNameAsync(username);
             var profile = await _profileService.GetProfileByUserId(user.Id);
-            var model = new ProfileViewModel { FirstName = profile.FirstName, LastName = profile.LastName, MiddleName = profile.MiddleName, Email = user.Email, Phone = user.PhoneNumber };
+            var model = new ProfileViewModel { FirstName = profile.FirstName, LastName = profile.LastName, MiddleName = profile.MiddleName, Email = user.Email, Phone = user.PhoneNumber, EmailConfigm = user.EmailConfirmed };
             return View(model);
         }
 
@@ -111,6 +114,96 @@ namespace DebtTracker.Web.Controllers
                 user.PhoneNumber = number.Phone;
             await _userManager.UpdateAsync(user);
             return RedirectToAction("Profile");
+        }
+
+        /// <summary>
+        /// Model for change Email
+        /// </summary>
+        /// <returns>View model for change Email</returns>
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> ChangeEmail()
+        {
+            var username = User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(username);
+
+            var model = new ProfileViewModel { Email = user.Email };
+            return View(model);
+        }
+
+        /// <summary>
+        /// Change Email
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns>Rezult change Email</returns>
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ChangeEmail(ProfileViewModel model)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var code = await _userManager.GenerateChangeEmailTokenAsync(user, model.Email);
+
+            var callbackUrl = Url.Action(
+                "ChangeEmailToken",
+                "Profile",
+                new
+                {
+                    code = code,
+                    oldEmail = user.Email,
+                    newEmail = model.Email
+                },
+                protocol: HttpContext.Request.Scheme);
+
+            await _emailService.SendEmailAsync(model.Email, "Подтвердите ваш email",
+                    $"Подтвердите адрес электронной почты, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+
+                return Content("Для подтверждения email адреса проверьте электронную почту и перейдите по ссылке, указанной в письме");
+        }
+
+        /// <summary>
+        /// Confirm Email
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="code"></param>
+        /// <returns>Error view</returns>
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return View("Error");
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Profile", "Profile");
+            }
+            else
+            {
+                return View("Error");
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> ChangeEmailToken([FromQuery] string code, [FromQuery] string oldEmail, [FromQuery] string newEmail)
+        {
+            var user = await _userManager.FindByEmailAsync(oldEmail);
+            var result =  await _userManager.ChangeEmailAsync(user, newEmail, code);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Profile", "Profile");
+            }
+            else
+            {
+                return View("Error");
+            }
         }
     }
 }

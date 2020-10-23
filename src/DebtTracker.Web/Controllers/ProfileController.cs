@@ -45,6 +45,11 @@ namespace DebtTracker.Web.Controllers
             var user = await _userManager.FindByNameAsync(username);
             var profile = await _profileService.GetProfileByUserId(user.Id);
             var model = new ProfileViewModel { FirstName = profile.FirstName, LastName = profile.LastName, MiddleName = profile.MiddleName, Email = user.Email, Phone = user.PhoneNumber, EmailConfigm = user.EmailConfirmed };
+            if (user.EmailConfirmed) {
+                model.EmailConfigm = true;
+                return View(model);
+            }
+
             return View(model);
         }
 
@@ -135,7 +140,7 @@ namespace DebtTracker.Web.Controllers
         /// Change Email
         /// </summary>
         /// <param name="number"></param>
-        /// <returns>Rezult change Email</returns>
+        /// <returns>Generate tocken and send email message</returns>
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> ChangeEmail(ProfileViewModel model)
@@ -159,37 +164,14 @@ namespace DebtTracker.Web.Controllers
 
                 return Content("Для подтверждения email адреса проверьте электронную почту и перейдите по ссылке, указанной в письме");
         }
-
+        
         /// <summary>
-        /// Confirm Email
+        /// Configm and change email
         /// </summary>
-        /// <param name="userId"></param>
         /// <param name="code"></param>
-        /// <returns>Error view</returns>
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
-        {
-            if (userId == null || code == null)
-            {
-                return View("Error");
-            }
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return View("Error");
-            }
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Profile", "Profile");
-            }
-            else
-            {
-                return View("Error");
-            }
-        }
-
+        /// <param name="oldEmail"></param>
+        /// <param name="newEmail"></param>
+        /// <returns>result cahange email</returns>
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> ChangeEmailToken([FromQuery] string code, [FromQuery] string oldEmail, [FromQuery] string newEmail)
@@ -204,6 +186,43 @@ namespace DebtTracker.Web.Controllers
             {
                 return View("Error");
             }
+        }
+
+        /// <summary>
+        /// Request email 
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult RequestEmail()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Request email
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Resalt sending email</returns>
+        [HttpPost]
+        public async Task<IActionResult> RequestEmail(RequestEmailViewModels model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(model.UserName);
+
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var callbackUrl = Url.Action(
+                    "ConfirmEmail",
+                    "Account",
+                    new { userId = user.Id, code = code },
+                    protocol: HttpContext.Request.Scheme);
+
+                await _emailService.SendEmailAsync(user.Email, "Confirm your account",
+                    $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+
+                return Content("Для подтверждения email адреса проверьте электронную почту и перейдите по ссылке, указанной в письме");
+
+            }
+            return View(model);
         }
     }
 }

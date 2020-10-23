@@ -79,7 +79,7 @@ namespace DebtTracker.Web.Controllers
                     await _emailService.SendEmailAsync(model.Email, "Confirm your account",
                         $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
 
-                    return Content("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
+                    return Content("Поздравляем вы успешно зарегестрированы в приложении");
                 }
                 else
                 {
@@ -140,17 +140,7 @@ namespace DebtTracker.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(model.UserName);
 
-                //if (user != null)
-                //{
-                //    if (!await _userManager.IsEmailConfirmedAsync(user))
-                //    {
-                //        model.EmailConfigm = true;
-                //        ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
-                //        return View(model);
-                //    }
-                //}
                 var result =
                     await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
@@ -233,44 +223,6 @@ namespace DebtTracker.Web.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "Пользователь не найден");
                 }
-            }
-            return View(model);
-        }
-
-        /// <summary>
-        /// Request email 
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult RequestEmail()
-        {
-            return View();
-        }
-
-
-        /// <summary>
-        /// Request email
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns>Resalt sending email</returns>
-        [HttpPost]
-        public async Task<IActionResult> RequestEmail(RequestEmailViewModels model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.FindByNameAsync(model.UserName);
-
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var callbackUrl = Url.Action(
-                    "ConfirmEmail",
-                    "Account",
-                    new { userId = user.Id, code = code },
-                    protocol: HttpContext.Request.Scheme);
-
-                await _emailService.SendEmailAsync(user.Email, "Confirm your account",
-                    $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
-
-                return Content("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
-
             }
             return View(model);
         }

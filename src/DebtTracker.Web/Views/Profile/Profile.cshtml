@@ -3,26 +3,30 @@
 <h2>Вход в приложение</h2>
 <form asp-controller="Profile" asp-action="Profile">
     <div>
-        <p>@Model.LastName</p>
+        <p> LastName: @Model.LastName</p>
     </div>
     <div>
-        <p>@Model.FirstName</p>
+        <p> FirstName: @Model.FirstName</p>
     </div>
     <div>
-        <p>@Model.MiddleName</p>
+        <p> MiddleName: @Model.MiddleName</p>
     </div>
     <div>
-        <p>@Model.Phone</p>
+        <p> Phone: @Model.Phone</p>
     </div>
     <div>
-        <p>@Model.Email</p>
-        @if (!Model.EmailConfigm) {
-          <p>Email не подтвержден</p>
+        <p> Email: @Model.Email</p>
+
+        @if (Model.EmailConfigm == false)
+        {
+            <p>Email не подтвержден</p>
+            <a asp-controller="Profile" asp-action="RequestEmail">Запрос подтверждения Email</a>
         }
     </div>
     <div>
         <a asp-controller="Profile" asp-action="EditProfile">Изменить профиль</a>
         <a asp-controller="Profile" asp-action="ChangePhoneNumber">Изменить номер телефона</a>
         <a asp-controller="Profile" asp-action="ChangeEmail">Изменить email</a>
+
     </div>
 </form>

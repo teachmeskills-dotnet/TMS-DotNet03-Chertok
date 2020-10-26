@@ -29,6 +29,7 @@ namespace DebtTracker.Web
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<IGroupService, GroupService>();
             services.AddDbContext<DebtTrackerContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DebtTrackerDatabase")));
 

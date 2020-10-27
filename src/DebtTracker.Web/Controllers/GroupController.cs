@@ -1,4 +1,5 @@
 ﻿using DebtTracker.BLL.Interfaces;
+using DebtTracker.BLL.Models;
 using DebtTracker.DAL.Models;
 using DebtTracker.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -47,5 +48,38 @@ namespace DebtTracker.Web.Controllers
             }
             return View(groupsViewsModels);
         }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(GroupActionViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var username = User.Identity.Name;
+                var user = await _userManager.FindByNameAsync(username);
+                var profile = await _profileService.GetProfileByUserId(user.Id);
+
+                var groupDto = new GroupsDto
+                {
+                    ProfileId = profile.Id,
+                    Title = model.Title,
+                    Description = model.Description,
+                    
+                };
+
+                await _groupService.AddAsync(groupDto);
+
+                return RedirectToAction("Index", "Group");
+            }
+
+            return View(model);
+        }
+
     }
 }

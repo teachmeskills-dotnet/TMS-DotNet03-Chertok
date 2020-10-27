@@ -34,8 +34,18 @@ namespace DebtTracker.BLL.Services
                 Title = group.Title,
                 Description = group.Description,
             };
-
+           
             await _repository.AddAsync(groupModel);
+            await _repository.SaveChangesAsync();
+
+            var getGroup = await _repository.GetEntityWithoutTrackingAsync(group => group.Title == groupModel.Title && group.ProfileId == groupModel.ProfileId && group.Description == groupModel.Description);
+
+            var groupProfileModel = new GroupProfiles {
+               ProfileId = getGroup.ProfileId,
+               GroupId = getGroup.Id
+            };
+
+            await _repositoryGroupProfiles.AddAsync(groupProfileModel);
             await _repository.SaveChangesAsync();
         }
 
@@ -86,7 +96,7 @@ namespace DebtTracker.BLL.Services
                 return groupDtos;
             }
 
-            foreach (var groupDto in groupsProfileDtos)
+            foreach (var groupDto in GroupProfilesDtos)
             {
                 groupsProfileDtos.Add(new GroupProfilesDto
                 {
@@ -122,5 +132,45 @@ namespace DebtTracker.BLL.Services
 
             return groupDtos;
         }
+
+        public async Task AddAsyncGroupProfile(GroupProfilesDto groupProfiles)
+        {
+            if (groupProfiles is null)
+            {
+                throw new ArgumentNullException(nameof(groupProfiles));
+            }
+            var groupProfilesModel = new GroupProfiles
+            {
+                ProfileId = groupProfiles.ProfileId,
+                GroupId = groupProfiles.GroupId
+            };
+
+            await _repositoryGroupProfiles.AddAsync(groupProfilesModel);
+            await _repositoryGroupProfiles.SaveChangesAsync();
+        }
+
+
+        //public async Task<GroupsDto> GetGroupId(GroupsDto groupsDto)
+        //{
+        //    if (groupsDto is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(groupsDto));
+
+        //    }
+        //    var group = await _repository.GetEntityWithoutTrackingAsync(group => groupsDto.Id == group.Id && groupsDto.Title == group.Title);
+        //    if (group is null)
+        //    {
+        //        return new GroupsDto();
+        //    }
+
+        //    var groupDto = new GroupsDto
+        //    {
+        //        Id = group.Id,
+        //        Title = group.Title,
+        //        Description = group.Description
+        //    };
+
+        //    return groupDto;
+        //}
     }
 }

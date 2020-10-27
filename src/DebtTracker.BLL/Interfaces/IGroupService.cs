@@ -29,5 +29,7 @@ namespace DebtTracker.BLL.Interfaces
         /// </summary>
         /// <param name="userId">Search profil by UserId key</param>
         Task<IEnumerable<GroupsDto>> GetGroups(int profileId);
+
+        Task AddAsyncGroupProfile(GroupProfilesDto groupProfiles);
     }
 }

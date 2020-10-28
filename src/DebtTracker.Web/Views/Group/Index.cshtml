@@ -12,6 +12,9 @@
     {
 <form asp-controller="Group" asp-action="Index">
     <div>
+        <a class="todo__text" asp-controller="Group" asp-action="Detail" asp-route-id="@group.Id">
+            <span>@group.Title</span>
+        </a>
         <p> Название группы: @group.Title</p>
     </div>
     <div>

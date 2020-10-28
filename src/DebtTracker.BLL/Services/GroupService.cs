@@ -15,11 +15,13 @@ namespace DebtTracker.BLL.Services
     {
         private readonly IRepository<Groups> _repository;
         private readonly IRepository<GroupProfiles> _repositoryGroupProfiles;
+        private readonly IRepository<Profile> _repositoryProfile;
 
-        public GroupService(IRepository<Groups> repository,IRepository<GroupProfiles> repositoryGroupProfiles)
+        public GroupService(IRepository<Groups> repository, IRepository<GroupProfiles> repositoryGroupProfiles, IRepository<Profile> repositoryProfil)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _repositoryGroupProfiles = repositoryGroupProfiles ?? throw new ArgumentNullException(nameof(repositoryGroupProfiles));
+            _repositoryProfile = repositoryProfil ?? throw new ArgumentNullException(nameof(repository));
         }
 
         public async Task AddAsync(GroupsDto group)
@@ -66,9 +68,9 @@ namespace DebtTracker.BLL.Services
 
         }
 
-        public async Task<GroupsDto> GetGroupAsync(int id, int profileId)
+        public async Task<GroupsDto> GetGroupAsync(int id)
         {
-            var group = await _repository.GetEntityWithoutTrackingAsync(group => group.Id == id && group.ProfileId == profileId);
+            var group = await _repository.GetEntityWithoutTrackingAsync(group => group.Id == id);
             if (group is null)
             {
                 return new GroupsDto();
@@ -135,7 +137,62 @@ namespace DebtTracker.BLL.Services
             return groupDtos;
         }
 
-        public async Task AddAsyncGroupProfile(GroupProfilesDto groupProfiles)
+        public async Task<IEnumerable<ProfileDto>> GetAsyncProfilesByGroup(int groupId)
+        {
+
+            var profileDtos = new List<ProfileDto>();
+            var groupsProfileDtos = new List<GroupProfilesDto>();
+            var GroupProfilesDtos = await _repositoryGroupProfiles
+                .GetAll()
+                .AsNoTracking()
+                .Where(groupe => groupe.GroupId == groupId)
+                .ToListAsync();
+
+            if (!GroupProfilesDtos.Any())
+            {
+                return profileDtos;
+            }
+
+            foreach (var profileDto in GroupProfilesDtos)
+            {
+                groupsProfileDtos.Add(new GroupProfilesDto
+                {
+                    Id = profileDto.Id,
+                    ProfileId = profileDto.ProfileId,
+                    GroupId = profileDto.GroupId
+                });
+            }
+
+            foreach (var profile in groupsProfileDtos)
+            {
+                var ProfileDtos = await _repositoryProfile
+                .GetAll()
+                .AsNoTracking()
+                .Where(profil => profil.Id == profile.ProfileId)
+                .ToListAsync();
+
+                if (!ProfileDtos.Any())
+                {
+                    return profileDtos;
+                }
+                foreach (var profileDto in ProfileDtos)
+                {
+                    profileDtos.Add(new ProfileDto
+                    {
+                        Id = profileDto.Id,
+                        FirstName = profileDto.FirstName,
+                        LastName = profileDto.LastName,
+                        MiddleName = profileDto.MiddleName,
+                        UserId = profileDto.UserId,
+                    });
+                };
+
+            }
+
+            return profileDtos;
+        }
+
+        public async Task AddAsyncProfileToGroup(GroupProfilesDto groupProfiles)
         {
             if (groupProfiles is null)
             {
@@ -151,28 +208,5 @@ namespace DebtTracker.BLL.Services
             await _repositoryGroupProfiles.SaveChangesAsync();
         }
 
-
-        //public async Task<GroupsDto> GetGroupId(GroupsDto groupsDto)
-        //{
-        //    if (groupsDto is null)
-        //    {
-        //        throw new ArgumentNullException(nameof(groupsDto));
-
-        //    }
-        //    var group = await _repository.GetEntityWithoutTrackingAsync(group => groupsDto.Id == group.Id && groupsDto.Title == group.Title);
-        //    if (group is null)
-        //    {
-        //        return new GroupsDto();
-        //    }
-
-        //    var groupDto = new GroupsDto
-        //    {
-        //        Id = group.Id,
-        //        Title = group.Title,
-        //        Description = group.Description
-        //    };
-
-        //    return groupDto;
-        //}
     }
 }

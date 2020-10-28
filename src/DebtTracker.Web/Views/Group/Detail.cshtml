@@ -1,0 +1,18 @@
+﻿@model GroupViewModel
+
+<div class="indent__margin-bottom">
+    <a asp-controller="Group" asp-action="Edit" asp-route-id="@Model.Id">
+        <input class="button button__link button__red" type="button" value="Edit" />
+    </a>
+</div>
+
+<p class="todo__detail">Название: @Model.Title</p>
+<p>Комментарий: @Model.Description</p>
+
+<p>Список пользователей</p>
+@foreach (var profile in Model.Profiles)
+{
+    <div>Имя: @profile.LastName</div>
+    <div>Фамилия: @profile.FirstName</div>
+    <div>Отчество: @profile.MiddleName</div>
+}

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DebtTracker.Web.Controllers
@@ -28,6 +29,11 @@ namespace DebtTracker.Web.Controllers
             _groupService = groupService ?? throw new ArgumentNullException(nameof(groupService));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
+
+        /// <summary>
+        /// Get user groups
+        /// </summary>
+        /// <returns>View List groups</returns>
         public async Task<IActionResult> Index()
         {
             var username = User.Identity.Name;
@@ -49,12 +55,21 @@ namespace DebtTracker.Web.Controllers
             return View(groupsViewsModels);
         }
 
+        /// <summary>
+        /// Create group
+        /// </summary>
+        /// <returns>View create group</returns>
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
+        /// <summary>
+        /// Create group 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Rezult create</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(GroupActionViewModel model)
@@ -81,5 +96,25 @@ namespace DebtTracker.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Detail view
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Detail view about group</returns>
+        public async Task<IActionResult> Detail(int id)
+        {
+            var groupDto = await _groupService.GetGroupAsync(id);
+            var profilesDto = await _groupService.GetAsyncProfilesByGroup(id);
+
+            var groupViewModel = new GroupViewModel
+            {
+                Id = groupDto.Id,
+                Title = groupDto.Title,
+                Description = groupDto.Description,
+                Profiles = profilesDto,
+            };
+
+            return View(groupViewModel);
+        }
     }
 }

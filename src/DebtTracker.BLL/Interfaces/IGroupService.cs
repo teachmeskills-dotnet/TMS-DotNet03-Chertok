@@ -23,13 +23,20 @@ namespace DebtTracker.BLL.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <param name="profileId"></param>
-        Task<GroupsDto> GetGroupAsync(int id, int profileId);
+        Task<GroupsDto> GetGroupAsync(int id);
+
         /// <summary>
         /// Get groups from base
         /// </summary>
-        /// <param name="userId">Search profil by UserId key</param>
+        /// <param name="profileId">Get groups by profileId key</param>
         Task<IEnumerable<GroupsDto>> GetGroups(int profileId);
 
-        Task AddAsyncGroupProfile(GroupProfilesDto groupProfiles);
+        /// <summary>
+        /// Get users in group
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <returns>List profiles</returns>
+        Task<IEnumerable<ProfileDto>> GetAsyncProfilesByGroup(int groupId);
+
     }
 }

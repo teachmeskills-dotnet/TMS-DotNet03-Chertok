@@ -58,5 +58,10 @@ namespace DebtTracker.DAL.Models
         /// Navigation to TransactionProfiles.
         /// </summary>
         public ICollection<TransactionProfiles> TransactionsProfiles { get; set; }
+
+        /// <summary>
+        /// Guid
+        /// </summary>
+        public Guid Guid { get; set; }
     }
 }

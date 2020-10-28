@@ -1,4 +1,5 @@
 ﻿using DebtTracker.Common.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace DebtTracker.DAL.Models
@@ -38,5 +39,10 @@ namespace DebtTracker.DAL.Models
         /// Navigation to Transactions.
         /// </summary>
         public ICollection<Transactions> Transactions { get; set; }
+
+        /// <summary>
+        /// Guid
+        /// </summary>
+        public Guid Guid { get; set; }
     }
 }

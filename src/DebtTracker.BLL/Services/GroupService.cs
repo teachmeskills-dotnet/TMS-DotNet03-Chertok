@@ -28,17 +28,19 @@ namespace DebtTracker.BLL.Services
             {
                 throw new ArgumentNullException(nameof(group));
             }
+            var groupGuid = Guid.NewGuid();
             var groupModel = new Groups
             {
                 ProfileId = group.ProfileId,
                 Title = group.Title,
                 Description = group.Description,
+                Guid=groupGuid,
             };
            
             await _repository.AddAsync(groupModel);
             await _repository.SaveChangesAsync();
 
-            var getGroup = await _repository.GetEntityWithoutTrackingAsync(group => group.Title == groupModel.Title && group.ProfileId == groupModel.ProfileId && group.Description == groupModel.Description);
+            var getGroup = await _repository.GetEntityWithoutTrackingAsync(group => group.Title == groupModel.Title && group.Guid == groupModel.Guid);
 
             var groupProfileModel = new GroupProfiles {
                ProfileId = getGroup.ProfileId,

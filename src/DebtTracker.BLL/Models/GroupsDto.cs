@@ -1,4 +1,6 @@
-﻿namespace DebtTracker.BLL.Models
+﻿using System;
+
+namespace DebtTracker.BLL.Models
 {
     /// <summary>
     /// Transport model from group
@@ -20,5 +22,10 @@
 
         /// <inheritdoc/>
         public int ProfileId { get; set; }
+
+        /// <summary>
+        /// Group guid
+        /// </summary>
+        public Guid Guid { get; set; }
     }
 }

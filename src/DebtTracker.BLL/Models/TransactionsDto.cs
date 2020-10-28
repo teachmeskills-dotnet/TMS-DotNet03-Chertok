@@ -40,5 +40,10 @@ namespace DebtTracker.BLL.Models
 
         /// <inheritdoc/>
         public int GroupId { get; set; }
+
+        /// <summary>
+        /// Transaction guid
+        /// </summary>
+        public Guid Guid { get; set; }
     }
 }

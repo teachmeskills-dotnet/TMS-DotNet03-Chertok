@@ -60,7 +60,6 @@ namespace DebtTracker.BLL.Services
                 throw new ArgumentNullException(nameof(group));
             };
             var editGroup = await _repository.GetEntityAsync(q => q.Id.Equals(group.Id));
-            editGroup.ProfileId = group.ProfileId;
             editGroup.Title = group.Title;
             editGroup.Description = group.Description;
             _repository.Update(editGroup);

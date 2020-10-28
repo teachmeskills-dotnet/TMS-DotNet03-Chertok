@@ -116,5 +116,50 @@ namespace DebtTracker.Web.Controllers
 
             return View(groupViewModel);
         }
+
+        /// <summary>
+        /// Edit group
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Return view model group</returns>
+        [HttpGet]
+        public async Task<IActionResult> EditAsync(int id)
+        {
+            var groupDto = await _groupService.GetGroupAsync(id);
+
+            var groupActionViewModel = new GroupActionViewModel
+            {
+                Id = groupDto.Id,
+                Title = groupDto.Title,
+                Description = groupDto.Description,
+            };
+
+            return View(groupActionViewModel);
+        }
+
+        /// <summary>
+        /// Edit group
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Result change group</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(GroupActionViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var groupDto = new GroupsDto
+                {
+                    Id = model.Id,
+                    Title = model.Title,
+                    Description = model.Description,                    
+                };
+
+                await _groupService.Edit(groupDto);
+
+                return RedirectToAction("Index", "Group");
+            }
+            return View(model);
+        }
     }
 }

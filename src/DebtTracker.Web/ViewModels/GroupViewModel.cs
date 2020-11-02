@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 namespace DebtTracker.Web.ViewModels
@@ -27,5 +28,7 @@ namespace DebtTracker.Web.ViewModels
         /// Users
         /// </summary>
         public IEnumerable<ProfileDto> Profiles { get; set; }
+
+        public string GroupUrl { get; set; }
     }
 }

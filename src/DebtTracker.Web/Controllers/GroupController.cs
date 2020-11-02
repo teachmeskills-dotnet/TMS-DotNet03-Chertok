@@ -2,11 +2,11 @@
 using DebtTracker.BLL.Models;
 using DebtTracker.DAL.Models;
 using DebtTracker.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DebtTracker.Web.Controllers
@@ -42,7 +42,7 @@ namespace DebtTracker.Web.Controllers
             var groupDtos = await _groupService.GetGroups(profile.Id);
 
             var groupsViewsModels = new List<GroupViewModel>();
-            
+
             foreach (var groupDto in groupDtos)
             {
                 groupsViewsModels.Add(new GroupViewModel
@@ -85,7 +85,7 @@ namespace DebtTracker.Web.Controllers
                     ProfileId = profile.Id,
                     Title = model.Title,
                     Description = model.Description,
-                    
+
                 };
 
                 await _groupService.AddAsync(groupDto);
@@ -106,12 +106,19 @@ namespace DebtTracker.Web.Controllers
             var groupDto = await _groupService.GetGroupAsync(id);
             var profilesDto = await _groupService.GetAsyncProfilesByGroup(id);
 
+            var groupUrl = Url.Action(
+                        "AddUser",
+                        "Group",
+                        new { groupHash = groupDto.Guid },
+                        protocol: HttpContext.Request.Scheme);
+
             var groupViewModel = new GroupViewModel
             {
                 Id = groupDto.Id,
                 Title = groupDto.Title,
                 Description = groupDto.Description,
                 Profiles = profilesDto,
+                GroupUrl = groupUrl
             };
 
             return View(groupViewModel);
@@ -152,7 +159,7 @@ namespace DebtTracker.Web.Controllers
                 {
                     Id = model.Id,
                     Title = model.Title,
-                    Description = model.Description,                    
+                    Description = model.Description,
                 };
 
                 await _groupService.Edit(groupDto);
@@ -160,6 +167,35 @@ namespace DebtTracker.Web.Controllers
                 return RedirectToAction("Index", "Group");
             }
             return View(model);
+        }
+
+        /// <summary>
+        /// Detail view
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Detail view about group</returns>
+        [Authorize]
+        public async Task<IActionResult> AddUser([FromQuery] Guid groupHash)
+        {
+            var username = User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(username);
+            var profile = await _profileService.GetProfileByUserId(user.Id);
+            var groupDto = await _groupService.GetGroupByGuidAsync(groupHash);
+           
+            var groupProfileDto = new GroupProfilesDto
+            {
+                ProfileId = profile.Id,
+                GroupId = groupDto.Id,
+             
+            };
+
+            var checkDouble = await _groupService.CheckDoubleAsyncProfileToGroup(groupProfileDto);
+
+            if (checkDouble) {
+                await _groupService.AddAsyncProfileToGroup(groupProfileDto);
+                return RedirectToAction("Index", "Group");
+            }
+            return Content("Данный пользователь уже присутствует в группе");
         }
     }
 }

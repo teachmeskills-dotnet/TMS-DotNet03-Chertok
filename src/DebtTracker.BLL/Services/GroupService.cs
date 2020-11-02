@@ -79,7 +79,8 @@ namespace DebtTracker.BLL.Services
             {
                 Id = group.Id,
                 Title = group.Title,
-                Description = group.Description
+                Description = group.Description,
+                Guid = group.Guid
             };
 
             return groupDto;
@@ -207,5 +208,38 @@ namespace DebtTracker.BLL.Services
             await _repositoryGroupProfiles.SaveChangesAsync();
         }
 
+        public async Task<GroupsDto> GetGroupByGuidAsync(Guid guid)
+        {
+            var group = await _repository.GetEntityWithoutTrackingAsync(group => group.Guid == guid);
+            if (group is null)
+            {
+                return new GroupsDto();
+            }
+
+            var groupDto = new GroupsDto
+            {
+                Id = group.Id,
+                Title = group.Title,
+                Description = group.Description
+            };
+
+            return groupDto;
+        }
+
+        public async Task<bool> CheckDoubleAsyncProfileToGroup(GroupProfilesDto groupProfiles)
+        {
+            if (groupProfiles is null)
+            {
+                throw new ArgumentNullException(nameof(groupProfiles));
+            }
+
+            var getUserGroup = await _repositoryGroupProfiles.GetEntityWithoutTrackingAsync(groupProfile => groupProfile.ProfileId == groupProfiles.ProfileId && groupProfile.GroupId == groupProfiles.GroupId);
+            if (getUserGroup!=null) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
     }
 }

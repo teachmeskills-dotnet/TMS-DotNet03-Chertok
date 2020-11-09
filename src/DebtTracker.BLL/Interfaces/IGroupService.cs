@@ -22,8 +22,7 @@ namespace DebtTracker.BLL.Interfaces
         /// <summary>
         /// Get group
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="profileId"></param>
+        /// <param name="id">Group id</param>
         Task<GroupsDto> GetGroupAsync(int id);
 
         /// <summary>

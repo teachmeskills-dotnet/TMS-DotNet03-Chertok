@@ -18,3 +18,25 @@
 }
 
 <p>@Model.GroupUrl</p>
+
+<div class="indent__margin-bottom">
+    <a asp-controller="Transaction" asp-action="Create" asp-route-id="@Model.Id">
+        <input class="button button__link button__orange" type="button" value="Добавить платеж" />
+    </a>
+</div>
+
+@foreach (var transaction in Model.Transactions)
+{
+<form asp-controller="Group" asp-action="Index">
+    <div>
+        <a class="todo__text" asp-controller="Transaction" asp-action="Index" asp-route-id="@transaction.Id">
+            <span>@transaction.Description</span>
+        </a>
+        <p> Наименование: @transaction.Description</p>
+    </div>
+    <div>
+        <p>Комментарий: @transaction.Comment</p>
+    </div>
+    <div>Сумма: @transaction.Amount</div>
+</form>
+}

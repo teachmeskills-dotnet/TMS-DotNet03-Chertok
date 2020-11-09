@@ -16,6 +16,7 @@ namespace DebtTracker.Web.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IProfileService _profileService;
         private readonly IGroupService _groupService;
+        private readonly ITransactionsService _transactionsService;
 
         /// <summary>
         /// Constructor
@@ -23,11 +24,13 @@ namespace DebtTracker.Web.Controllers
         /// <param name="userManager"></param>
         /// <param name="signInManager"></param>
         /// <param name="profileService"></param>
-        public GroupController(IProfileService profileService, IGroupService groupService, UserManager<User> userManager)
+        /// <param name="transactionsService"></param>
+        public GroupController(IProfileService profileService, IGroupService groupService, UserManager<User> userManager, ITransactionsService transactionsService)
         {
             _profileService = profileService ?? throw new ArgumentNullException(nameof(profileService));
             _groupService = groupService ?? throw new ArgumentNullException(nameof(groupService));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _transactionsService = transactionsService ?? throw new ArgumentNullException(nameof(transactionsService));
         }
 
         /// <summary>
@@ -49,7 +52,7 @@ namespace DebtTracker.Web.Controllers
                 {
                     Id = groupDto.Id,
                     Title = groupDto.Title,
-                    Description = groupDto.Description,
+                    Description = groupDto.Description
                 });
             }
             return View(groupsViewsModels);
@@ -85,7 +88,8 @@ namespace DebtTracker.Web.Controllers
                     ProfileId = profile.Id,
                     Title = model.Title,
                     Description = model.Description,
-
+                    //Currency
+                    CurrencyType = 933
                 };
 
                 await _groupService.AddAsync(groupDto);
@@ -105,6 +109,7 @@ namespace DebtTracker.Web.Controllers
         {
             var groupDto = await _groupService.GetGroupAsync(id);
             var profilesDto = await _groupService.GetAsyncProfilesByGroup(id);
+            var transactionsDto = await _transactionsService.GetTransactionsAsync(id);
 
             var groupUrl = Url.Action(
                         "AddUser",
@@ -112,12 +117,14 @@ namespace DebtTracker.Web.Controllers
                         new { groupHash = groupDto.Guid },
                         protocol: HttpContext.Request.Scheme);
 
+
             var groupViewModel = new GroupViewModel
             {
                 Id = groupDto.Id,
                 Title = groupDto.Title,
                 Description = groupDto.Description,
                 Profiles = profilesDto,
+                Transactions = transactionsDto,
                 GroupUrl = groupUrl
             };
 
@@ -130,7 +137,7 @@ namespace DebtTracker.Web.Controllers
         /// <param name="id"></param>
         /// <returns>Return view model group</returns>
         [HttpGet]
-        public async Task<IActionResult> EditAsync(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             var groupDto = await _groupService.GetGroupAsync(id);
 

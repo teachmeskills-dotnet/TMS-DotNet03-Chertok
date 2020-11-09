@@ -1,0 +1,11 @@
+﻿@model TransactionViewModel
+
+<div class="indent__margin-bottom">
+    <a asp-controller="Group" asp-action="Edit" asp-route-id="@Model.Id">
+        <input class="button button__link button__red" type="button" value="Редактировать" />
+    </a>
+</div>
+
+<p class="todo__detail">Название: @Model.Description</p>
+<p>Комментарий: @Model.Comment</p>
+<p>Сумма: @Model.Amount</p>

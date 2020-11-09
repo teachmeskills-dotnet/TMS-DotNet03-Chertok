@@ -27,5 +27,10 @@ namespace DebtTracker.BLL.Models
         /// Group guid
         /// </summary>
         public Guid Guid { get; set; }
+
+        /// <summary>
+        /// CurrencyType
+        /// </summary>
+        public int CurrencyType { get; set; }
     }
 }

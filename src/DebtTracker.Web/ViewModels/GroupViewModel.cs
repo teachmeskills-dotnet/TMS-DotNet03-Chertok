@@ -29,6 +29,14 @@ namespace DebtTracker.Web.ViewModels
         /// </summary>
         public IEnumerable<ProfileDto> Profiles { get; set; }
 
+        /// <summary>
+        /// Url from add to group
+        /// </summary>
         public string GroupUrl { get; set; }
+
+        /// <summary>
+        /// Users
+        /// </summary>
+        public IEnumerable<TransactionsDto> Transactions { get; set; }
     }
 }

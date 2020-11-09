@@ -30,6 +30,7 @@ namespace DebtTracker.Web
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<ITransactionsService, TransactionsService>();
             services.AddDbContext<DebtTrackerContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DebtTrackerDatabase")));
 

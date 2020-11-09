@@ -44,5 +44,10 @@ namespace DebtTracker.DAL.Models
         /// Guid
         /// </summary>
         public Guid Guid { get; set; }
+
+        /// <summary>
+        /// CurrencyType
+        /// </summary>
+        public int CurrencyType { get; set; }
     }
 }

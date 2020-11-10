@@ -80,7 +80,9 @@ namespace DebtTracker.BLL.Services
             {
                 return;
             }
-
+            transactionModel.Description = transaction.Description;
+            transactionModel.Comment = transaction.Comment;
+            transactionModel.Amount = transaction.Amount;
             _repository.Update(transactionModel);
             await _repositoryTransactionProfiles.SaveChangesAsync();
         }

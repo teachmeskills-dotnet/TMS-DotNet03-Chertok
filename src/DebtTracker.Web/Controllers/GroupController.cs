@@ -171,7 +171,7 @@ namespace DebtTracker.Web.Controllers
 
                 await _groupService.Edit(groupDto);
 
-                return RedirectToAction("Index", "Group");
+                return RedirectToAction("Detail", "Group", new { id = groupDto.Id });
             }
             return View(model);
         }

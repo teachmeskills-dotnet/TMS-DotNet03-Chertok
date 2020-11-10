@@ -6,6 +6,12 @@ namespace DebtTracker.Web.ViewModels
 {
     public class TransactionActionViewModel
     {
+
+        /// <summary>
+        /// Identifier.
+        /// </summary>
+        public int Id { get; set; }
+
         /// <summary>
         /// Description
         /// </summary>

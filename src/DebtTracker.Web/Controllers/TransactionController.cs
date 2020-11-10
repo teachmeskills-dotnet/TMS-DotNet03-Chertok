@@ -105,5 +105,52 @@ namespace DebtTracker.Web.Controllers
 
             return View(model);
         }
+
+        /// <summary>
+        /// Edit transaction
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Return view model transaction</returns>
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var tarnsactionDto = await _transactionsService.GetTransactionAsync(id);
+
+            var transactionActionViewModel = new TransactionActionViewModel
+            {
+                Id = tarnsactionDto.Id,
+                Description = tarnsactionDto.Description,
+                Comment = tarnsactionDto.Comment,
+                Amount = tarnsactionDto.Amount
+            };
+
+            return View(transactionActionViewModel);
+        }
+
+        /// <summary>
+        /// Edit transaction
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Result change transaction</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(TransactionActionViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var transactionDto = new TransactionsDto
+                {   
+                    Id = model.Id,
+                    Description = model.Description,
+                    Comment = model.Comment,
+                    Amount = model.Amount
+                };
+
+                await _transactionsService.EditAsync(transactionDto);
+
+                return RedirectToAction("Index", "Transaction", new { id = transactionDto.Id });
+            }
+            return View(model);
+        }
     }
 }

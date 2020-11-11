@@ -28,7 +28,7 @@ namespace DebtTracker.Web.ViewModels
         /// Amount
         /// </summary>
         [Required(ErrorMessage = "Укажите сумму транзакции")]
-        [Range(typeof(decimal), "0", "9999999999999999,99", ErrorMessage = "Числовое значение, разделитель запятая")]
+        [RegularExpression(@"[0-9]{0,14}(\,[0-9]{0,2})?", ErrorMessage = "Числовое значение, разделитель запятая, после запятой не более двух чисел")]
         public decimal Amount { get; set; }
 
         /// <summary>

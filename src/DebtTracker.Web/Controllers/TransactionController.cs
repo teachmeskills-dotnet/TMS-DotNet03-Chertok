@@ -100,7 +100,7 @@ namespace DebtTracker.Web.Controllers
 
                 await _transactionsService.AddAsync(transactionDto);
 
-                return RedirectToAction("Index", "Group");
+                return RedirectToAction("Detail", "Group", new { id = model.GroupId });
             }
 
             return View(model);
@@ -225,8 +225,9 @@ namespace DebtTracker.Web.Controllers
                 Id = transactionId,          
             };
 
+            var transaction = await _transactionsService.GetTransactionAsync(transactionId);
             await _transactionsService.DeleteTransactionAsync(transactionsDto);
-            return RedirectToAction("Detail", "Group");
+            return RedirectToAction("Detail", "Group", new { id = transaction.GroupId});
         }
     }
 }

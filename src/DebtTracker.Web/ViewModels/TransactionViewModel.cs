@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DebtTracker.BLL.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,5 +48,10 @@ namespace DebtTracker.Web.ViewModels
         /// Transaction guid
         /// </summary>
         public Guid Guid { get; set; }
+
+        /// <summary>
+        /// Profiles
+        /// </summary>
+        public IEnumerable<ProfileDto> Profiles { get; set; }
     }
 }

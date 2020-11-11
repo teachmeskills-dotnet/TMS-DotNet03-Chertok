@@ -3,7 +3,7 @@
     /// <summary>
     /// TransactionProfiles transport model
     /// </summary>
-    class TransactionProfilesDto
+    public class TransactionProfilesDto
     {
         /// <inheritdoc/>
         public int Id { get; set; }

@@ -32,11 +32,12 @@
         <a class="todo__text" asp-controller="Transaction" asp-action="Index" asp-route-id="@transaction.Id">
             <span>@transaction.Description</span>
         </a>
-        <p> Наименование: @transaction.Description</p>
+        <p> Наименование: @transaction.Description Комментарий: @transaction.Comment Сумма: @transaction.Amount</p>
     </div>
     <div>
-        <p>Комментарий: @transaction.Comment</p>
+        <a asp-controller="Transaction" asp-action="Delete" asp-route-transactionId="@transaction.Id">
+            Удалить
+        </a>
     </div>
-    <div>Сумма: @transaction.Amount</div>
 </form>
 }

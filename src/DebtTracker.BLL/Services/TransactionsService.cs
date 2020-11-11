@@ -46,12 +46,12 @@ namespace DebtTracker.BLL.Services
             await _repository.SaveChangesAsync();
         }
 
-        public async Task DeleteTransactionAsync(TransactionsDto transaction)
+        public async Task DeleteTransactionAsync(TransactionsDto transactionDto)
         {
             var transactionsProfile = await _repositoryTransactionProfiles
                 .GetAll()
                 .AsNoTracking()
-                .Where(transaction => transaction.TransactionId == transaction.Id)
+                .Where(transaction => transaction.TransactionId == transactionDto.Id)
                 .ToListAsync();
 
             if (transactionsProfile.Any())
@@ -63,8 +63,8 @@ namespace DebtTracker.BLL.Services
                 }
             }
 
-            var transactionModel = await _repository.GetEntityAsync(transactionModel => transactionModel.Id == transaction.Id);
-            if (transaction is null)
+            var transactionModel = await _repository.GetEntityAsync(transactionModel => transactionModel.Id == transactionDto.Id);
+            if (transactionModel is null)
             {
                 return;
             }
@@ -144,9 +144,9 @@ namespace DebtTracker.BLL.Services
             return transactionsDtos;
         }
 
-        public async Task AddUserToTransactionAsync(int id, int profileId)
+        public async Task AddUserToTransactionAsync(TransactionProfilesDto transactionProfiles)
         {
-            var transaction = await _repository.GetEntityAsync(transaction => transaction.Id == id );
+            var transaction = await _repository.GetEntityAsync(transaction => transaction.Id == transactionProfiles.TransactionId);
             if (transaction is null)
             {
                 return;
@@ -155,17 +155,26 @@ namespace DebtTracker.BLL.Services
             var transactionProfileModel = new TransactionProfiles
             {
                 TransactionId = transaction.Id,
-                ProfileId = profileId
+                ProfileId = transactionProfiles.ProfileId
 
             };
+
+            var transactionProfile = await _repositoryTransactionProfiles.GetEntityAsync(
+                transactionprofile => transactionprofile.ProfileId == transactionProfileModel.ProfileId
+                && transactionprofile.TransactionId == transactionProfileModel.TransactionId);
+
+            if(transactionProfile != null)
+            {
+                return;
+            }
 
             await _repositoryTransactionProfiles.AddAsync(transactionProfileModel);
             await _repositoryTransactionProfiles.SaveChangesAsync();
         }
 
-        public async Task DeleteUserToTransactionAsync(int id, int profileId)
+        public async Task DeleteUserToTransactionAsync(TransactionProfilesDto transactionProfiles)
         {
-            var transactionProfileModel = await _repositoryTransactionProfiles.GetEntityAsync(transaction => transaction.Id == id && transaction.ProfileId==profileId);
+            var transactionProfileModel = await _repositoryTransactionProfiles.GetEntityAsync(transaction => transaction.TransactionId == transactionProfiles.TransactionId && transaction.ProfileId == transactionProfiles.ProfileId);
             if (transactionProfileModel is null)
             {
                 return;

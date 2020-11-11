@@ -43,7 +43,7 @@ namespace DebtTracker.BLL.Interfaces
         /// <param name="id">transaction id</param>
         /// <param name="profileId">profile id</param>
         /// <returns>Rezult</returns>
-        Task AddUserToTransactionAsync(int id, int profileId);
+        Task AddUserToTransactionAsync(TransactionProfilesDto transactionProfiles);
 
         /// <summary>
         /// Delete binding user in transaction
@@ -51,6 +51,6 @@ namespace DebtTracker.BLL.Interfaces
         /// <param name="id">Transaction id</param>
         /// <param name="profileId"> profile id</param>
         /// <returns></returns>
-        Task DeleteUserToTransactionAsync(int id, int profileId);
+        Task DeleteUserToTransactionAsync(TransactionProfilesDto transactionProfiles);
     }
 }

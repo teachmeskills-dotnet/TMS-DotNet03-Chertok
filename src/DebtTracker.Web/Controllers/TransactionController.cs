@@ -39,18 +39,18 @@ namespace DebtTracker.Web.Controllers
         /// <returns>Detail view about transaction</returns>
         public async Task<IActionResult> Index(int id)
         {
-            var groupDto = await _transactionsService.GetTransactionAsync(id);
+            var transactionDto = await _transactionsService.GetTransactionAsync(id);
 
             var transactionViewModel = new TransactionViewModel
             {
-                Id = groupDto.Id,
-                Description = groupDto.Description,
-                Comment = groupDto.Comment,
-                Amount = groupDto.Amount,
-                CurrencyType = groupDto.CurrencyType,
-                CreationTime = groupDto.CreationTime,
-                ProfileId = groupDto.ProfileId,
-                GroupId = groupDto.GroupId,
+                Id = transactionDto.Id,
+                Description = transactionDto.Description,
+                Comment = transactionDto.Comment,
+                Amount = transactionDto.Amount,
+                CurrencyType = transactionDto.CurrencyType,
+                CreationTime = transactionDto.CreationTime,
+                ProfileId = transactionDto.ProfileId,
+                GroupId = transactionDto.GroupId,
             };
 
             return View(transactionViewModel);
@@ -151,6 +151,82 @@ namespace DebtTracker.Web.Controllers
                 return RedirectToAction("Index", "Transaction", new { id = transactionDto.Id });
             }
             return View(model);
+        }
+
+        /// <summary>
+        /// Add users view
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>View users</returns>
+        public async Task<IActionResult> AddUsers(int id)
+        {
+            var transactionDto = await _transactionsService.GetTransactionAsync(id);
+            var profilesDto = await _groupService.GetAsyncProfilesByGroup(transactionDto.GroupId);
+
+            var transactionViewModel = new TransactionViewModel
+            {
+                Id = transactionDto.Id,
+                Description = transactionDto.Description,
+                Comment = transactionDto.Comment,
+                Amount = transactionDto.Amount,
+                CurrencyType = transactionDto.CurrencyType,
+                CreationTime = transactionDto.CreationTime,
+                ProfileId = transactionDto.ProfileId,
+                GroupId = transactionDto.GroupId,
+                Profiles = profilesDto
+            };
+
+            return View(transactionViewModel);
+        }
+
+        /// <summary>
+        /// Add user and transaction to connection table
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>result add to table</returns>
+        public async Task<IActionResult> AddUser(int transactionId, int profileId)
+        {
+            var transactionProfileDto = new TransactionProfilesDto
+            {
+                TransactionId = transactionId,
+                ProfileId = profileId,               
+            };
+
+            await _transactionsService.AddUserToTransactionAsync(transactionProfileDto);
+            return RedirectToAction("AddUsers", "Transaction", new { id = transactionId });
+        }
+
+        /// <summary>
+        /// Add user and transaction to connection table
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>result add to table</returns>
+        public async Task<IActionResult> DeleteUser(int transactionId, int profileId)
+        {
+            var transactionProfileDto = new TransactionProfilesDto
+            {
+                TransactionId = transactionId,
+                ProfileId = profileId,
+            };
+
+            await _transactionsService.DeleteUserToTransactionAsync(transactionProfileDto);
+            return RedirectToAction("AddUsers", "Transaction", new { id = transactionId });
+        }
+
+        /// <summary>
+        /// Delete transaction
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>result delete transaction</returns>
+        public async Task<IActionResult> Delete(int transactionId)
+        {
+            var transactionsDto = new TransactionsDto
+            {
+                Id = transactionId,          
+            };
+
+            await _transactionsService.DeleteTransactionAsync(transactionsDto);
+            return RedirectToAction("Detail", "Group");
         }
     }
 }

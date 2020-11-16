@@ -1,6 +1,7 @@
 ﻿using DebtTracker.BLL.Interfaces;
 using DebtTracker.BLL.Models;
 using DebtTracker.DAL.Models;
+using DebtTracker.Web.Models;
 using DebtTracker.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -111,12 +112,22 @@ namespace DebtTracker.Web.Controllers
             var profilesDto = await _groupService.GetAsyncProfilesByGroup(id);
             var transactionsDto = await _transactionsService.GetTransactionsAsync(id);
 
+            var ScoreList = await _transactionsService.HowMatchPayAsync(id);
+            var UserScore = new List<UsersScore>();
+
             var groupUrl = Url.Action(
                         "AddUser",
                         "Group",
                         new { groupHash = groupDto.Guid },
                         protocol: HttpContext.Request.Scheme);
 
+            foreach (var transaction in ScoreList ) {
+                var user = await _profileService.GetProfileById(transaction.Creditor);
+                UserScore.Add( new UsersScore {
+                    LastName = user.LastName,
+                    Summ = transaction.Summ
+                });
+            }
 
             var groupViewModel = new GroupViewModel
             {
@@ -125,7 +136,8 @@ namespace DebtTracker.Web.Controllers
                 Description = groupDto.Description,
                 Profiles = profilesDto,
                 Transactions = transactionsDto,
-                GroupUrl = groupUrl
+                GroupUrl = groupUrl,
+                Scores = UserScore
             };
 
             return View(groupViewModel);

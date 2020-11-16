@@ -1,9 +1,6 @@
 ﻿using DebtTracker.BLL.Models;
-using System;
+using DebtTracker.Web.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Threading.Tasks;
 
 namespace DebtTracker.Web.ViewModels
 {
@@ -38,5 +35,10 @@ namespace DebtTracker.Web.ViewModels
         /// Users
         /// </summary>
         public IEnumerable<TransactionsDto> Transactions { get; set; }
+
+        /// <summary>
+        /// Scores
+        /// </summary>
+        public IEnumerable<UsersScore> Scores { get; set; }
     }
 }

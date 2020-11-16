@@ -52,5 +52,12 @@ namespace DebtTracker.BLL.Interfaces
         /// <param name="profileId"> profile id</param>
         /// <returns></returns>
         Task DeleteUserToTransactionAsync(TransactionProfilesDto transactionProfiles);
+
+        /// <summary>
+        /// Get summ transactions by group
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <returns>List sum</returns>
+        Task<IEnumerable<Score>> HowMatchPayAsync(int groupId);
     }
 }

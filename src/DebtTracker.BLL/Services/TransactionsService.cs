@@ -35,8 +35,8 @@ namespace DebtTracker.BLL.Services
                 Description = transaction.Description,
                 Comment = transaction.Comment,
                 Amount = transaction.Amount,
-                CurrencyType= Convert.ToInt32(transaction.CurrencyType),
-                CreationTime= transaction.CreationTime,
+                CurrencyType = Convert.ToInt32(transaction.CurrencyType),
+                CreationTime = transaction.CreationTime,
                 ProfileId = transaction.ProfileId,
                 GroupId = transaction.GroupId,
                 Guid = transactionGuid
@@ -96,7 +96,7 @@ namespace DebtTracker.BLL.Services
             }
 
             var transactionDto = new TransactionsDto
-            {   
+            {
                 Id = transactionModel.Id,
                 Description = transactionModel.Description,
                 Comment = transactionModel.Comment,
@@ -163,7 +163,7 @@ namespace DebtTracker.BLL.Services
                 transactionprofile => transactionprofile.ProfileId == transactionProfileModel.ProfileId
                 && transactionprofile.TransactionId == transactionProfileModel.TransactionId);
 
-            if(transactionProfile != null)
+            if (transactionProfile != null)
             {
                 return;
             }
@@ -182,6 +182,37 @@ namespace DebtTracker.BLL.Services
 
             _repositoryTransactionProfiles.Delete(transactionProfileModel);
             await _repositoryTransactionProfiles.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Score>> HowMatchPayAsync(int groupId)
+        {
+            var transactionsSumms = new List<Score>();
+            var transactions = await _repository
+                .GetAll()
+                .AsNoTracking()
+                .Where(transaction => transaction.GroupId == groupId)
+                .ToListAsync();
+
+            if (!transactions.Any())
+            {
+                return transactionsSumms;
+            }
+
+            foreach (var transaction in transactions)
+            {
+                transactionsSumms.Add(new Score
+                {
+                    Creditor = transaction.ProfileId,
+                    Summ = transaction.Amount
+                });
+            }
+
+            var transactionResulSumm = new List<Score>();
+            var usersSumms = transactionsSumms
+                .GroupBy(summ => summ.Creditor, summ => summ.Summ)
+                .Select(summ => new Score { Creditor = summ.Key, Summ = summ.Sum() });
+
+            return usersSumms;
         }
     }
 }

@@ -27,17 +27,25 @@
 
 @foreach (var transaction in Model.Transactions)
 {
-<form asp-controller="Group" asp-action="Index">
-    <div>
-        <a class="todo__text" asp-controller="Transaction" asp-action="Index" asp-route-id="@transaction.Id">
-            <span>@transaction.Description</span>
-        </a>
-        <p> Наименование: @transaction.Description Комментарий: @transaction.Comment Сумма: @transaction.Amount</p>
-    </div>
-    <div>
-        <a asp-controller="Transaction" asp-action="Delete" asp-route-transactionId="@transaction.Id">
-            Удалить
-        </a>
-    </div>
-</form>
+    <form asp-controller="Group" asp-action="Index">
+        <div>
+            <a class="todo__text" asp-controller="Transaction" asp-action="Index" asp-route-id="@transaction.Id">
+                <span>@transaction.Description</span>
+            </a>
+            <p> Наименование: @transaction.Description Комментарий: @transaction.Comment Сумма: @transaction.Amount</p>
+        </div>
+        <div>
+            <a asp-controller="Transaction" asp-action="Delete" asp-route-transactionId="@transaction.Id">
+                Удалить
+            </a>
+        </div>
+    </form>
+}
+
+@foreach (var payment in Model.Scores)
+{
+    <div>Имя: @payment.LastName</div>
+    <div>Фамилия: @payment.FirstName</div>
+    <div>Отчество: @payment.MiddleName</div>
+    <div>Сумма: @payment.Summ</div>
 }

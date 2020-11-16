@@ -25,5 +25,12 @@ namespace DebtTracker.BLL.Interfaces
         /// </summary>
         /// <param name="userId">Search profil by UserId key</param>
         Task<ProfileDto> GetProfileByUserId(string userId);
+
+        /// <summary>
+        /// Get profile from base by id
+        /// </summary>
+        /// <param name="profileId"></param>
+        /// <returns>profiledto</returns>
+        Task<ProfileDto> GetProfileById(int profileId);
     }
 }

@@ -77,5 +77,25 @@ namespace DebtTracker.BLL.Services
             profile.Id = profileDataModel.Id;
             return profile;
         }
+
+        public async Task<ProfileDto> GetProfileById(int profileId)
+        {
+            var profileDataModel = await _repository.GetEntityAsync(transactionModel => transactionModel.Id == profileId);
+            
+            if (profileDataModel is null)
+            {
+                return new ProfileDto();
+            }
+
+            var profile = new ProfileDto
+            {
+                UserId = profileDataModel.UserId,
+                FirstName = profileDataModel.FirstName,
+                LastName = profileDataModel.LastName,
+                MiddleName = profileDataModel.MiddleName,
+            };
+            profile.Id = profileDataModel.Id;
+            return profile;
+        }
     }
 }

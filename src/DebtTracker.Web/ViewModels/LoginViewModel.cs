@@ -32,5 +32,7 @@ namespace DebtTracker.Web.ViewModels
         ///Return Url
         /// </summary>
         public string ReturnUrl { get; set; }
+
+        public bool EmailConfigm { get; set; }
     }
 }

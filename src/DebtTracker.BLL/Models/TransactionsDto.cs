@@ -1,14 +1,11 @@
-﻿using DebtTracker.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
-namespace DebtTracker.DAL.Models
+namespace DebtTracker.BLL.Models
 {
     /// <summary>
-    /// Transactions
+    /// Transactions transport models
     /// </summary>
-    public class Transactions : IHasDbIdentity
+    public class TransactionsDto
     {
         /// <inheritdoc/>
         public int Id { get; set; }
@@ -41,26 +38,11 @@ namespace DebtTracker.DAL.Models
         /// <inheritdoc/>
         public int ProfileId { get; set; }
 
-        /// <summary>
-        /// Navigation to Profile
-        /// </summary>
-        public Profile Profile { get; set; }
-
         /// <inheritdoc/>
         public int GroupId { get; set; }
 
         /// <summary>
-        /// Navigation to Group
-        /// </summary>
-        public Groups Groups { get; set; }
-
-        /// <summary>
-        /// Navigation to TransactionProfiles.
-        /// </summary>
-        public ICollection<TransactionProfiles> TransactionsProfiles { get; set; }
-
-        /// <summary>
-        /// Guid
+        /// Transaction guid
         /// </summary>
         public Guid Guid { get; set; }
     }

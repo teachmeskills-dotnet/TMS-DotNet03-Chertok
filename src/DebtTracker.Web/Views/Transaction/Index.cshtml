@@ -1,0 +1,21 @@
+﻿@model TransactionViewModel
+
+<div class="indent__margin-bottom">
+    <a asp-controller="Transaction" asp-action="Edit" asp-route-id="@Model.Id">
+        <input class="button button__link button__red" type="button" value="Редактировать" />
+    </a>
+</div>
+<div class="indent__margin-bottom">
+    <a asp-controller="Group" asp-action="Detail" asp-route-id="@Model.GroupId">
+        <input class="button button__link button__red" type="button" value="К группе" />
+    </a>
+</div>
+<div class="indent__margin-bottom">
+    <a asp-controller="Transaction" asp-action="AddUsers" asp-route-id="@Model.Id">
+        <input class="button button__link button__red" type="button" value="За кого оплата"/>
+    </a>
+</div>
+
+<p class="todo__detail">Название: @Model.Description</p>
+<p>Комментарий: @Model.Comment</p>
+<p>Сумма: @Model.Amount</p>

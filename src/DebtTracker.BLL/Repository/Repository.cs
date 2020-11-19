@@ -51,6 +51,11 @@ namespace DebtTracker.BLL.Repository
             return await _dbSet.FirstOrDefaultAsync(predicate);
         }
 
+        public async Task<T> GetEntityWithoutTrackingAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate);
+        }
+
         public Task SaveChangesAsync()
         {
             return _context.SaveChangesAsync();

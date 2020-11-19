@@ -10,21 +10,21 @@ namespace DebtTracker.Web.ViewModels
         /// <summary>
         /// Email
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Не указан Email")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
         /// <summary>
         /// Phone number
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Не указан номер телефона")]
         [Display(Name = "Номер телефона")]
         public string PhoneNumber { get; set; }
 
         /// <summary>
         /// User name
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Не указано Имя пользователя")]
         [Display(Name = "Имя пользователя")]
         public string UserName { get; set; }
 

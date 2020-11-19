@@ -1,4 +1,6 @@
-﻿using DebtTracker.Common.Interfaces;
+﻿using DebtTracker.BLL.Interfaces;
+using DebtTracker.BLL.Models;
+using DebtTracker.Common.Interfaces;
 using DebtTracker.DAL.Models;
 using DebtTracker.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -18,6 +20,7 @@ namespace DebtTracker.Web.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailService _emailService;
+        private readonly IProfileService _profileService;
 
         /// <summary>
         /// Сonstructor
@@ -25,11 +28,12 @@ namespace DebtTracker.Web.Controllers
         /// <param name="userManager"></param>
         /// <param name="signInManager"></param>
         /// <param name="emailService"></param>
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService, IProfileService profileService)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
+            _profileService = profileService ?? throw new ArgumentNullException(nameof(profileService));
         }
 
         /// <summary>
@@ -55,9 +59,16 @@ namespace DebtTracker.Web.Controllers
                 var user = new User { Email = model.Email, PhoneNumber = model.PhoneNumber, UserName = model.UserName };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
+                
 
                 if (result.Succeeded)
                 {
+                    var profile = new ProfileDto()
+                    {
+                        UserId = user.Id
+                    };
+
+                    await _profileService.AddAsync(profile);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action(
                         "ConfirmEmail",
@@ -68,7 +79,7 @@ namespace DebtTracker.Web.Controllers
                     await _emailService.SendEmailAsync(model.Email, "Confirm your account",
                         $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
 
-                    return Content("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
+                    return Content("Поздравляем вы успешно зарегестрированы в приложении");
                 }
                 else
                 {
@@ -129,15 +140,7 @@ namespace DebtTracker.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(model.UserName);
-                if (user != null)
-                {
-                    if (!await _userManager.IsEmailConfirmedAsync(user))
-                    {
-                        ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
-                        return View(model);
-                    }
-                }
+
                 var result =
                     await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
@@ -220,45 +223,6 @@ namespace DebtTracker.Web.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "Пользователь не найден");
                 }
-            }
-            return View(model);
-        }
-
-        /// <summary>
-        /// Request email 
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult RequestEmail()
-        {
-            return View();
-        }
-
-
-        /// <summary>
-        /// Request email
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns>Resalt sending email</returns>
-        [HttpPost]
-        public async Task<IActionResult> RequestEmail(RequestEmailViewModels model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.FindByNameAsync(model.UserName);
-
-                // генерация токена для пользователя
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var callbackUrl = Url.Action(
-                    "ConfirmEmail",
-                    "Account",
-                    new { userId = user.Id, code = code },
-                    protocol: HttpContext.Request.Scheme);
-
-                await _emailService.SendEmailAsync(user.Email, "Confirm your account",
-                    $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
-
-                return Content("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
-
             }
             return View(model);
         }

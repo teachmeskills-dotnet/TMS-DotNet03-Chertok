@@ -30,6 +30,9 @@ namespace DebtTracker.DAL.Configurations
             .WithMany(group => group.Groups)
             .HasForeignKey(group => group.ProfileId)
             .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(group => group.Guid)
+                .IsRequired();
         }
     }
 }

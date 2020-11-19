@@ -40,6 +40,9 @@ namespace DebtTracker.DAL.Configurations
             .WithMany(profile => profile.Transactions)
             .HasForeignKey(Transactions => Transactions.ProfileId)
             .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(transaction => transaction.Guid)
+                .IsRequired();
         }
     }
 }

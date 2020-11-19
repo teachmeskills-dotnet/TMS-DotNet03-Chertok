@@ -1,0 +1,25 @@
+﻿@model TransactionViewModel
+
+<p>@Model.Description</p>
+<p>@Model.Comment</p>
+
+<div class="indent__margin-bottom">
+    <a asp-controller="Transaction" asp-action="Index" asp-route-id="@Model.Id">
+        <input class="button button__link button__red" type="button" value="Вернуться" />
+    </a>
+</div>
+
+@if (Model.Profiles.Any()) {
+    foreach(var profile in Model.Profiles)
+    {
+<div>
+    <p>Имя:@profile.LastName Фамилия:@profile.LastName Отчество:@profile.MiddleName</p>
+    <a asp-controller="Transaction" asp-action="AddUser" asp-route-transactionId="@Model.Id" asp-route-profileId="@profile.Id">
+        Добавить
+    </a>
+    <a asp-controller="Transaction" asp-action="DeleteUser" asp-route-transactionId="@Model.Id" asp-route-profileId="@profile.Id">
+        Удалить
+    </a>
+</div>
+    }
+}

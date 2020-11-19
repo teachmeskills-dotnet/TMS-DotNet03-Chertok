@@ -59,5 +59,12 @@ namespace DebtTracker.BLL.Interfaces
         /// <param name="groupId"></param>
         /// <returns>List sum</returns>
         Task<IEnumerable<Score>> HowMatchPayAsync(int groupId);
+
+        /// <summary>
+        /// Get summ mutual settlement from users
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <returns>List sum</returns>
+        Task<IEnumerable<Score>> ScoreAsync(int groupId);
     }
 }

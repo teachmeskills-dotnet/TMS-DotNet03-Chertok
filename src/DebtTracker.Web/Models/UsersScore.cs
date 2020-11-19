@@ -8,17 +8,32 @@
         /// <summary>
         /// First name
         /// </summary>
-        public string FirstName { get; set; }
+        public string FirstNameCreditor { get; set; }
 
         /// <summary>
         /// Last name
         /// </summary>
-        public string LastName { get; set; }
+        public string LastNameCreditor { get; set; }
 
         /// <summary>
         /// Middle name
         /// </summary>
-        public string MiddleName { get; set; }
+        public string MiddleNameCreditor { get; set; }
+
+        /// <summary>
+        /// First name
+        /// </summary>
+        public string FirstNameDebitor { get; set; }
+
+        /// <summary>
+        /// Last name
+        /// </summary>
+        public string LastNameDebitor { get; set; }
+
+        /// <summary>
+        /// Middle name
+        /// </summary>
+        public string MiddleNameDebitor { get; set; }
 
         /// <summary>
         /// Summ

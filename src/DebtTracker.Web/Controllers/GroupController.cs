@@ -112,8 +112,10 @@ namespace DebtTracker.Web.Controllers
             var profilesDto = await _groupService.GetAsyncProfilesByGroup(id);
             var transactionsDto = await _transactionsService.GetTransactionsAsync(id);
 
-            var ScoreList = await _transactionsService.HowMatchPayAsync(id);
-            var UserScore = new List<UsersScore>();
+            var scoreList = await _transactionsService.HowMatchPayAsync(id);
+            var usersScore = await _transactionsService.ScoreAsync(id);
+            var userScore = new List<UsersScore>();
+            var resultScore = new List<UsersScore>();
 
             var groupUrl = Url.Action(
                         "AddUser",
@@ -121,14 +123,29 @@ namespace DebtTracker.Web.Controllers
                         new { groupHash = groupDto.Guid },
                         protocol: HttpContext.Request.Scheme);
 
-            foreach (var transaction in ScoreList ) {
+            foreach (var transaction in scoreList ) {
                 var user = await _profileService.GetProfileById(transaction.Creditor);
-                UserScore.Add( new UsersScore {
-                    LastName = user.LastName,
+                userScore.Add( new UsersScore {
+                    LastNameCreditor = user.LastName,
                     Summ = transaction.Summ
                 });
             }
 
+            foreach (var score in usersScore)
+            {
+                var creditor = await _profileService.GetProfileById(score.Creditor);
+                var debitor = await _profileService.GetProfileById(score.Debitor);
+                resultScore.Add(new UsersScore
+                {
+                    LastNameCreditor = creditor.LastName,
+                    FirstNameCreditor = creditor.FirstName,
+                    MiddleNameCreditor = creditor.MiddleName,
+                    LastNameDebitor = debitor.LastName,
+                    FirstNameDebitor = debitor.FirstName,
+                    MiddleNameDebitor = debitor.MiddleName,
+                    Summ = score.Summ
+                });
+            }
             var groupViewModel = new GroupViewModel
             {
                 Id = groupDto.Id,
@@ -137,7 +154,8 @@ namespace DebtTracker.Web.Controllers
                 Profiles = profilesDto,
                 Transactions = transactionsDto,
                 GroupUrl = groupUrl,
-                Scores = UserScore
+                Scores = userScore,
+                UsersScore = resultScore
             };
 
             return View(groupViewModel);

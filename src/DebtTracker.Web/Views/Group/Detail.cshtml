@@ -44,8 +44,13 @@
 
 @foreach (var payment in Model.Scores)
 {
-    <div>Имя: @payment.LastName</div>
-    <div>Фамилия: @payment.FirstName</div>
-    <div>Отчество: @payment.MiddleName</div>
+    <div>Имя: @payment.LastNameCreditor</div>
+    <div>Фамилия: @payment.FirstNameCreditor</div>
+    <div>Отчество: @payment.MiddleNameCreditor</div>
     <div>Сумма: @payment.Summ</div>
+}
+
+@foreach (var score in Model.UsersScore)
+{
+<div>@score.LastNameDebitor @score.FirstNameDebitor @score.MiddleNameDebitor должен @score.LastNameCreditor @score.FirstNameCreditor @score.MiddleNameCreditor сумму в размере @score.Summ</div>
 }

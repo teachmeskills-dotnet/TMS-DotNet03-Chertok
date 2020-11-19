@@ -40,5 +40,10 @@ namespace DebtTracker.Web.ViewModels
         /// Scores
         /// </summary>
         public IEnumerable<UsersScore> Scores { get; set; }
+
+        /// <summary>
+        /// Scores
+        /// </summary>
+        public IEnumerable<UsersScore> UsersScore { get; set; }
     }
 }

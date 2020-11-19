@@ -1,5 +1,6 @@
 ﻿using DebtTracker.BLL.Interfaces;
 using DebtTracker.BLL.Models;
+using DebtTracker.Common.Constants;
 using DebtTracker.Common.Interfaces;
 using DebtTracker.DAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -207,12 +208,89 @@ namespace DebtTracker.BLL.Services
                 });
             }
 
-            var transactionResulSumm = new List<Score>();
             var usersSumms = transactionsSumms
                 .GroupBy(summ => summ.Creditor, summ => summ.Summ)
                 .Select(summ => new Score { Creditor = summ.Key, Summ = summ.Sum() });
 
             return usersSumms;
+        }
+
+        public async Task<IEnumerable<Score>> ScoreAsync(int groupId)
+        {
+            var transactionsAmounth = new List<Score>();
+            var transactions = await _repository
+                .GetAll()
+                .AsNoTracking()
+                .Where(transaction => transaction.GroupId == groupId)
+                .ToListAsync();
+
+            if (!transactions.Any())
+            {
+                return transactionsAmounth;
+            }
+
+            foreach (var transaction in transactions)
+            {
+                var transactionUser = await _repositoryTransactionProfiles
+                    .GetAll()
+                    .AsNoTracking()
+                    .Where(transactionmodel => transactionmodel.TransactionId == transaction.Id)
+                    .ToListAsync();
+
+                if (transactionUser.Any())
+                {
+                    var amounth = transaction.Amount / transactionUser.Count;
+                    foreach (var microtransaction in transactionUser)
+                    {
+                        if (microtransaction.ProfileId != transaction.ProfileId)
+                        {
+                            transactionsAmounth.Add(new Score
+                            {
+                                Creditor = transaction.ProfileId,
+                                Debitor = microtransaction.ProfileId,
+                                Summ = amounth
+                            });
+                        }
+                    }
+                }              
+            }
+
+            var usersScore = transactionsAmounth
+                .GroupBy(summ => new { summ.Creditor, summ.Debitor }, summ => summ.Summ)
+                .Select(summ => new Score { Creditor = summ.Key.Creditor, Debitor = summ.Key.Debitor, Summ = summ.Sum() });
+
+            var scoreResult = new List<Score>();
+            foreach (var scoretransaction in usersScore)
+            {
+                var userScore = usersScore.FirstOrDefault(p => p.Creditor == scoretransaction.Debitor && p.Debitor == scoretransaction.Creditor);
+
+                if (userScore != null)
+                {
+                    if (scoretransaction.Summ != userScore.Summ)
+                    {
+                        if (scoretransaction.Summ > userScore.Summ)
+                        {
+                            var score = scoretransaction.Summ - userScore.Summ;
+                            scoreResult.Add(new Score
+                            {
+                                Creditor = scoretransaction.Creditor,
+                                Debitor = scoretransaction.Debitor,
+                                Summ = Math.Round(score, ScoreConstants.numbersAfterСomma)
+                            });
+                        }
+                    }
+                }
+                else {
+                    scoreResult.Add(new Score
+                    {
+                        Creditor = scoretransaction.Creditor,
+                        Debitor = scoretransaction.Debitor,
+                        Summ = Math.Round(scoretransaction.Summ, ScoreConstants.numbersAfterСomma)
+                    });
+                }
+            }
+
+            return scoreResult;
         }
     }
 }

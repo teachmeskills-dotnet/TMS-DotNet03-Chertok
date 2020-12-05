@@ -1,19 +1,19 @@
 ﻿@model ProfileViewModel
 
 
-<form method="post" asp-controller="Profile" asp-action="EditProfile">
+<form class="forms" method="post" asp-controller="Profile" asp-action="EditProfile">
     <div>
-        <label asp-for="LastName"></label><br />
-        <input asp-for="LastName" />
-        <span asp-validation-for="LastName"></span>
-    </div>
-    <div>
-        <label asp-for="FirstName"></label><br />
+        <label asp-for="FirstName">Фамилия</label><br />
         <input asp-for="FirstName" />
         <span asp-validation-for="FirstName"></span>
     </div>
     <div>
-        <label asp-for="MiddleName"></label><br />
+        <label asp-for="LastName">Имя</label><br />
+        <input asp-for="LastName" />
+        <span asp-validation-for="LastName"></span>
+    </div>
+    <div>
+        <label asp-for="MiddleName">Отчество</label><br />
         <input asp-for="MiddleName" />
         <span asp-validation-for="MiddleName"></span>
     </div>

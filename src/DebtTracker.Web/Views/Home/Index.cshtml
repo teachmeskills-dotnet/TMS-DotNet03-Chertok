@@ -1,25 +1,23 @@
 ﻿
 @{
-    ViewData["Title"] = "Index page";
+    ViewData["Title"] = "DebtTracker";
 }
 
-<h1>Index page</h1>
+<body>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="greeting">
+            <h1>Добро пожаловать в приложение DebtTracker</h1>
+        </div>
+
+        <div>
+            <a class="groupicon" asp-controller="Group" asp-action="Index">
+                <img title="События" src="/images/3 User.svg" />
+            </a>
+        </div>
+    }
 
 
-@if (User.Identity.IsAuthenticated)
-{
-    <p>@User.Identity.Name</p>
-    <p>Добро пожаловать в приложение DebtTracker</p>
-    <a asp-controller="Profile" asp-action="Profile">Перейти к профилю</a>
-    <a class="btn btn-sm btn-primary" asp-controller="Account" asp-action="ChangePassword">Изменить</a>
+</body>
 
 
-    <form method="post" asp-controller="Account" asp-action="Logout">
-        <button type="submit">Выход</button>
-    </form>
-}
-else
-{
-    <a asp-controller="Account" asp-action="Login">Войти</a>
-    <a asp-controller="Account" asp-action="Register">Зарегистрироваться</a>
-}

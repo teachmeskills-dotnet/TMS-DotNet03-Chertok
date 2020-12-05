@@ -4,10 +4,43 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <link href="~/css/app.css" rel="stylesheet" asp-append-version="true" />
+    @RenderSection("css", false)
 </head>
+
 <body>
-    <div>
+    <header>
+        <div class="wrapper">
+            <div class="header">
+            <a class="logo" asp-controller="Home" asp-action="Index">DebtTracker</a>
+            <div class="account">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a class="profile" asp-controller="Profile" asp-action="Profile">
+                        <img title="Профиль" src="/images/Profile.svg" />
+                    </a>
+
+                    <form class="login" method="post" asp-controller="Account" asp-action="Logout">
+                        <button class="accountbottomexit" type="submit"></button>
+                    </form>
+                }
+                else
+                {
+                    <a class="profile" asp-controller="Account" asp-action="Register">
+                        <img title="Зарегестрироваться" src="/images/Account_register.svg" />
+                    </a>
+                    <a class="login" asp-controller="Account" asp-action="Login">
+                        <img title="Вход" src="/images/Account_enter.svg" />
+                    </a>
+                }
+            </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="wrapper">
         @RenderBody()
     </div>
+    
 </body>
 </html>

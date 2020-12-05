@@ -1,18 +1,20 @@
 ﻿@model ProfileViewModel
 
-<h2>Вход в приложение</h2>
-<form asp-controller="Profile" asp-action="Profile">
+
+<form class="forms" asp-controller="Profile" asp-action="Profile">
     <div>
-        <p> LastName: @Model.LastName</p>
+        <p>
+            Фамилия: @Model.FirstName
+        </p>
     </div>
     <div>
-        <p> FirstName: @Model.FirstName</p>
+        <p> Имя: @Model.LastName</p>
     </div>
     <div>
-        <p> MiddleName: @Model.MiddleName</p>
+        <p> Отчество: @Model.MiddleName</p>
     </div>
     <div>
-        <p> Phone: @Model.Phone</p>
+        <p> Номер телефона: @Model.Phone</p>
     </div>
     <div>
         <p> Email: @Model.Email</p>
@@ -27,6 +29,7 @@
         <a asp-controller="Profile" asp-action="EditProfile">Изменить профиль</a>
         <a asp-controller="Profile" asp-action="ChangePhoneNumber">Изменить номер телефона</a>
         <a asp-controller="Profile" asp-action="ChangeEmail">Изменить email</a>
+        <a asp-controller="Account" asp-action="ChangePassword">Изменить пароль</a>
     </div>
     <div>
         <a asp-controller="Group" asp-action="Index">События</a>

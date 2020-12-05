@@ -1,0 +1,28 @@
+﻿
+.group {
+    padding: 20px 20px;
+    background:rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    cursor: help;
+    margin-left:20%;
+    width:60%;
+}
+
+.group__indent-bottom {
+    margin-bottom: 8px;
+}
+
+.group__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.group__text {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 20px;
+    color: #252A31;
+    text-decoration: none;
+}

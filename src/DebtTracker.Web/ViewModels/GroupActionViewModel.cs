@@ -17,7 +17,7 @@ namespace DebtTracker.Web.ViewModels
         /// <summary>
         /// Title.
         /// </summary>
-        [Required]
+        [Required (ErrorMessage = "Поле наименование не может быть пустым")]
         [StringLength(ConfigurationContants.SqlMaxLengthMedium, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 3)]
         public string Title { get; set; }
 

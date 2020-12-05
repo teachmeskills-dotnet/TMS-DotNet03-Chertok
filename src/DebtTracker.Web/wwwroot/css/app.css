@@ -1,0 +1,110 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Lobster", sans-serif;
+
+}
+
+html {
+    background: url("../images/road.jpg") no-repeat;
+    background-size: cover;
+    height: 100%;
+}
+
+body{
+    height:auto;
+    width:auto;
+    text-align:center;
+    top:20%;
+}
+
+.header {
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top:3%;
+}
+label{
+    margin-top:30px;
+}
+
+.wrapper {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.logo {
+    width: 108px;
+    height: 24px;
+    top: 0px;
+    margin-left:5%;
+}
+
+.account {
+    width: 308px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right:5%;
+}
+
+.profile {
+    left: 0%;
+    width: 208px;
+    height: 25px;
+    top: 1px;
+}
+
+.login {
+    left: 70%;
+    width: 108px;
+    height: 25px;
+    top: 1px;
+}
+
+.accountbottom {
+    cursor: pointer;
+    padding: 6px 16px;
+    background: #006CFF;
+    border-radius: 3px;
+    border: none;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+
+.accountbottomexit {
+    width: 98px;
+    height: 24px;
+    right: 50px;
+    top: 1px;
+    background:url(/images/Account_exit.svg);
+    border:none;
+}
+
+.forms {
+    margin: auto;
+    margin-top: 10%;
+    padding: 20px;
+    width: 40%;
+}
+
+.greeting {
+    margin: auto;
+    margin-top: 10%;
+    padding: 20px;
+}
+
+.groupicon {
+    margin:0 auto;
+    margin-top: 10%;
+}
+
+

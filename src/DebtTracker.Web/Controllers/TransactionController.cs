@@ -1,10 +1,12 @@
 ﻿using DebtTracker.BLL.Interfaces;
 using DebtTracker.BLL.Models;
 using DebtTracker.DAL.Models;
+using DebtTracker.Web.Models;
 using DebtTracker.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DebtTracker.Web.Controllers
@@ -162,7 +164,22 @@ namespace DebtTracker.Web.Controllers
         {
             var transactionDto = await _transactionsService.GetTransactionAsync(id);
             var profilesDto = await _groupService.GetAsyncProfilesByGroup(transactionDto.GroupId);
+            var profiles = new List<UserProfileModel>();
 
+            foreach( var profileDto in profilesDto)
+            {
+                var userStatus = await _transactionsService.CheckUserInTransactionAsync(id,profileDto.Id);
+                profiles.Add(new UserProfileModel {
+                    Id = profileDto.Id,
+                    UserId = profileDto.UserId,
+                    LastName = profileDto.LastName,
+                    FirstName = profileDto.FirstName,
+                    MiddleName = profileDto.MiddleName,
+                    UserStatus = userStatus
+                });
+
+            }
+            
             var transactionViewModel = new TransactionViewModel
             {
                 Id = transactionDto.Id,
@@ -173,7 +190,7 @@ namespace DebtTracker.Web.Controllers
                 CreationTime = transactionDto.CreationTime,
                 ProfileId = transactionDto.ProfileId,
                 GroupId = transactionDto.GroupId,
-                Profiles = profilesDto
+                Profiles = profiles
             };
 
             return View(transactionViewModel);

@@ -1,56 +1,86 @@
 ﻿@model GroupViewModel
 
+<div>
+    <h1>@Model.Title</h1>
+    @if (Model.Description != null)
+    {
+        <p>Комментарий: @Model.Description</p>
+    }
+    <p>
+        Для добавления пользователя в группу попросите перейти его по ссылке:
+        @Model.GroupUrl
+    </p>
+</div>
+
 <div class="indent__margin-bottom">
     <a asp-controller="Group" asp-action="Edit" asp-route-id="@Model.Id">
-        <input class="button button__link button__red" type="button" value="Редактировать" />
+        <input class="button" type="button" value="Редактировать" />
     </a>
-</div>
-
-<p class="todo__detail">Название: @Model.Title</p>
-<p>Комментарий: @Model.Description</p>
-
-<p>Список пользователей</p>
-@foreach (var profile in Model.Profiles)
-{
-    <div>Имя: @profile.LastName</div>
-    <div>Фамилия: @profile.FirstName</div>
-    <div>Отчество: @profile.MiddleName</div>
-}
-
-<p>@Model.GroupUrl</p>
-
-<div class="indent__margin-bottom">
     <a asp-controller="Transaction" asp-action="Create" asp-route-id="@Model.Id">
-        <input class="button button__link button__orange" type="button" value="Добавить платеж" />
+        <input class="button" type="button" value="Добавить платеж" />
+    </a>
+    <a class="groupicon" asp-controller="Group" asp-action="Index">
+        <input class="button" type="button" value="К группам" />
     </a>
 </div>
 
-@foreach (var transaction in Model.Transactions)
-{
-    <form asp-controller="Group" asp-action="Index">
-        <div>
-            <a class="todo__text" asp-controller="Transaction" asp-action="Index" asp-route-id="@transaction.Id">
-                <span>@transaction.Description</span>
-            </a>
-            <p> Наименование: @transaction.Description Комментарий: @transaction.Comment Сумма: @transaction.Amount</p>
+<div class="groupdetail__wrapper">
+    <div class="firstsection">
+        <div class="userlist">
+            <p>Список участников группы:</p>
+            @foreach (var profile in Model.Profiles)
+            {
+                <div class="group__user">@profile.FirstName @profile.LastName @profile.MiddleName</div>
+            }
         </div>
-        <div>
-            <a asp-controller="Transaction" asp-action="Delete" asp-route-transactionId="@transaction.Id">
-                Удалить
-            </a>
+        <div class="userssumm">
+            @foreach (var payment in Model.Scores)
+            {
+            <div>@payment.FirstNameCreditor @payment.LastNameCreditor</div>
+                <div>Внесено платежей на сумму: @payment.Summ</div>
+            }
         </div>
-    </form>
-}
+    </div>
+    <div class="transactionlist">
+        @foreach (var transaction in Model.Transactions.Reverse())
+        {
+        
+            <form class="transaction" asp-controller="Group" asp-action="Index">
+                <div class="group_transaction_detail">
+                    <a asp-controller="Transaction" asp-action="Index" asp-route-id="@transaction.Id">
+                        <span>@transaction.Description</span>
+                    </a>
 
-@foreach (var payment in Model.Scores)
-{
-    <div>Имя: @payment.LastNameCreditor</div>
-    <div>Фамилия: @payment.FirstNameCreditor</div>
-    <div>Отчество: @payment.MiddleNameCreditor</div>
-    <div>Сумма: @payment.Summ</div>
-}
+                    @if (transaction.Comment != null)
+                    {
+                        <p>Комментарий: @transaction.Comment; Сумма: @transaction.Amount</p>
+                    }
+                    else
+                    {
+                        <p>Сумма: @transaction.Amount</p>
+                    }
+                </div>
+                <div class="group__action">
+                    <a asp-controller="Transaction" asp-action="Index" asp-route-id="@transaction.Id">
+                        <img title="Просмотр" src="/images/group_Show.svg" />
+                    </a>
+                    <a asp-controller="Transaction" asp-action="Delete" asp-route-transactionId="@transaction.Id">
+                        <img title="Удалить" src="/images/transaction_action_Delete.svg" />
+                    </a>
+                </div>
+            </form>
+        
+        }
+    </div>
 
-@foreach (var score in Model.UsersScore)
-{
-<div>@score.LastNameDebitor @score.FirstNameDebitor @score.MiddleNameDebitor должен @score.LastNameCreditor @score.FirstNameCreditor @score.MiddleNameCreditor сумму в размере @score.Summ</div>
+    <div class="usersscore">
+        @foreach (var score in Model.UsersScore)
+        {
+            <div>@score.LastNameDebitor @score.FirstNameDebitor @score.MiddleNameDebitor должен @score.LastNameCreditor @score.FirstNameCreditor @score.MiddleNameCreditor сумму в размере @score.Summ</div>
+        }
+    </div>
+</div>
+
+@section css {
+    <link href="~/css/group.css" rel="stylesheet" asp-append-version="true" />
 }

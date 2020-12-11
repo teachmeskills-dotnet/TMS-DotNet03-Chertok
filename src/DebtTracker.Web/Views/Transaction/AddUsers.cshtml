@@ -1,25 +1,52 @@
 ﻿@model TransactionViewModel
 
-<p>@Model.Description</p>
-<p>@Model.Comment</p>
+<h1>@Model.Description</h1>
+<h4>Комментарий: @Model.Comment</h4>
 
-<div class="indent__margin-bottom">
+<div class="bottom">
     <a asp-controller="Transaction" asp-action="Index" asp-route-id="@Model.Id">
-        <input class="button button__link button__red" type="button" value="Вернуться" />
+        <input class="button" type="button" value="Вернуться" />
     </a>
 </div>
 
-@if (Model.Profiles.Any()) {
-    foreach(var profile in Model.Profiles)
-    {
-<div>
-    <p>Имя:@profile.LastName Фамилия:@profile.LastName Отчество:@profile.MiddleName</p>
-    <a asp-controller="Transaction" asp-action="AddUser" asp-route-transactionId="@Model.Id" asp-route-profileId="@profile.Id">
-        Добавить
-    </a>
-    <a asp-controller="Transaction" asp-action="DeleteUser" asp-route-transactionId="@Model.Id" asp-route-profileId="@profile.Id">
-        Удалить
-    </a>
-</div>
-    }
+<div class="transaction__wrapper">
+    <div class="transaction__userlist">
+        @if (Model.Profiles.Any())
+        {
+              foreach (var profile in Model.Profiles)
+                {
+                @if (profile.UserStatus)
+                {
+                    <a asp-controller="Transaction" asp-action="DeleteUser" asp-route-transactionId="@Model.Id" asp-route-profileId="@profile.Id">
+                        <div class="transaction__transaction transaction__transaction_green">
+                            <div class="transaction__text">
+                                <p>@profile.LastName @profile.FirstName @profile.MiddleName</p>
+                            </div>                           
+                            <div class="transaction__action">
+                                <img title="Удалить" src="/images/transaction_action_Delete.svg" />
+                            </div>
+                        </div>
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Transaction" asp-action="AddUser" asp-route-transactionId="@Model.Id" asp-route-profileId="@profile.Id">
+                        <div class="transaction__transaction">
+                            <div class="transaction__text">
+                                <p>@profile.LastName @profile.FirstName @profile.MiddleName</p>
+                            </div>
+                            <div class="transaction__action">
+                                <img title="Добавить" src="/images/transaction_action_add.svg" />
+                            </div>
+                        </div>
+                    </a>
+                }
+                }
+                }
+            </div>
+        </div>
+    
+
+@section css {
+    <link href="~/css/transactions.css" rel="stylesheet" asp-append-version="true" />
 }

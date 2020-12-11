@@ -127,6 +127,7 @@ namespace DebtTracker.Web.Controllers
                 var user = await _profileService.GetProfileById(transaction.Creditor);
                 userScore.Add( new UsersScore {
                     LastNameCreditor = user.LastName,
+                    FirstNameCreditor = user.FirstName,
                     Summ = transaction.Summ
                 });
             }

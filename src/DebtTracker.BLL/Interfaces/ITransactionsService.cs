@@ -1,5 +1,6 @@
 ﻿using DebtTracker.BLL.Models;
 using DebtTracker.DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -66,5 +67,13 @@ namespace DebtTracker.BLL.Interfaces
         /// <param name="groupId"></param>
         /// <returns>List sum</returns>
         Task<IEnumerable<Score>> ScoreAsync(int groupId);
+
+        /// <summary>
+        /// Check communications user and transaction
+        /// </summary>
+        /// <param name="transactionsId"></param>
+        /// <param name="profileId"></param>
+        /// <returns>result</returns>
+        Task<Boolean> CheckUserInTransactionAsync(int transactionsId, int profileId);
     }
 }

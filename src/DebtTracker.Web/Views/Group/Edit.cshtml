@@ -2,17 +2,21 @@
 
 <h1 class="indent__margin-bottom">Редактировать группу</h1>
 
-<form method="post" asp-controller="Group" asp-action="Edit">
+<form class="forms" method="post" asp-controller="Group" asp-action="Edit">
     <div asp-validation-summary="ModelOnly"></div>
     <div class="indent__margin-bottom">
-        <input id="title" class="input" asp-for="Title" placeholder="Title" type="text" />
+        <input id="title" class="input" asp-for="Title" placeholder="Наименование" type="text" />
         <span asp-validation-for="Title"></span>
     </div>
     <div class="indent__margin-bottom">
-        <input id="description" class="input" asp-for="Description" placeholder="Description" type="text" />
+        <input id="description" class="input" asp-for="Description" placeholder="Комментарий" type="text" />
         <span asp-validation-for="Description"></span>
     </div>
     <div class="indent__margin-bottom">
         <button id="button_confirm" class="button" type="submit">Изменить</button>
     </div>
 </form>
+
+@section css {
+    <link href="~/css/group.css" rel="stylesheet" asp-append-version="true" />
+}

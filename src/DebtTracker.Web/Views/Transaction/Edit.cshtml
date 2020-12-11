@@ -1,14 +1,14 @@
 ﻿@model TransactionActionViewModel
 
 <h1 class="indent__margin-bottom">Редактирование платежа</h1>
-<form method="post" asp-controller="Transaction" asp-action="Edit">
+<form class="forms" method="post" asp-controller="Transaction" asp-action="Edit">
     <div asp-validation-summary="ModelOnly"></div>
     <div class="indent__margin-bottom">
-        <input id="description" class="input" asp-for="Description" placeholder="Description" type="text" />
+        <input id="description" class="input" asp-for="Description" placeholder="Наименование" type="text" />
         <span asp-validation-for="Description"></span>
     </div>
     <div class="indent__margin-bottom">
-        <input id="comment" class="input" asp-for="Comment" placeholder="Comment" type="text" />
+        <input id="comment" class="input" asp-for="Comment" placeholder="Комментарий" type="text" />
         <span asp-validation-for="Comment"></span>
     </div>
     <div class="indent__margin-bottom">
@@ -19,3 +19,7 @@
         <button id="button_confirm" class="button" type="submit">Изменить</button>
     </div>
 </form>
+
+@section css {
+    <link href="~/css/transactions.css" rel="stylesheet" asp-append-version="true" />
+}

@@ -116,13 +116,14 @@ namespace DebtTracker.Web.Controllers
             var usersScore = await _transactionsService.ScoreAsync(id);
             var userScore = new List<UsersScore>();
             var resultScore = new List<UsersScore>();
+            var transactionsUser = new List<UsersTransaction>();
 
             var groupUrl = Url.Action(
                         "AddUser",
                         "Group",
                         new { groupHash = groupDto.Guid },
                         protocol: HttpContext.Request.Scheme);
-
+           
             foreach (var transaction in scoreList ) {
                 var user = await _profileService.GetProfileById(transaction.Creditor);
                 userScore.Add( new UsersScore {
@@ -147,13 +148,32 @@ namespace DebtTracker.Web.Controllers
                     Summ = score.Summ
                 });
             }
+
+            foreach(var transaction in transactionsDto)
+            {
+                var transactionStatus = await _transactionsService.CheckUsersInTransactionAsync(transaction.Id);
+                transactionsUser.Add( new UsersTransaction
+                {
+                    Id = transaction.Id,
+                    Description = transaction.Description,
+                    Comment = transaction.Comment,
+                    Amount = transaction.Amount,
+                    CurrencyType = transaction.CurrencyType,
+                    CreationTime = transaction.CreationTime,
+                    ProfileId = transaction.ProfileId,
+                    GroupId = transaction.GroupId,
+                    Guid = transaction.Guid,
+                    Status = transactionStatus
+                });
+            }
+
             var groupViewModel = new GroupViewModel
             {
                 Id = groupDto.Id,
                 Title = groupDto.Title,
                 Description = groupDto.Description,
                 Profiles = profilesDto,
-                Transactions = transactionsDto,
+                Transactions = transactionsUser,
                 GroupUrl = groupUrl,
                 Scores = userScore,
                 UsersScore = resultScore

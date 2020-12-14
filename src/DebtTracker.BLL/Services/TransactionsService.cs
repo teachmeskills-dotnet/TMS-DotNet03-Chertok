@@ -307,5 +307,19 @@ namespace DebtTracker.BLL.Services
                 return true;
             }
         }
+
+        public async Task<Boolean> CheckUsersInTransactionAsync(int transactionsId)
+        {
+            var transactionProfile = await _repositoryTransactionProfiles.GetEntityAsync(
+                transactionprofile => transactionprofile.TransactionId == transactionsId);
+            if (transactionProfile is null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 }

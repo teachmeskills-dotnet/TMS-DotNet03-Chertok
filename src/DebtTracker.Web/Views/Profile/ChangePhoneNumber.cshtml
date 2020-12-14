@@ -2,16 +2,16 @@
 
 
 <form class="forms" method="post" asp-controller="Profile" asp-action="ChangePhoneNumber">
-    <div>
+    <div class="formslabel">
      <p>Текущий номер:</p> 
      <p>@Model.Phone</p>
     </div>
-    <div>
+    <div class="formslabel">
         <label asp-for="Phone">Введите новый номер телефона:</label><br />
         <input asp-for="Phone" />
         <span asp-validation-for="Phone"></span>
     </div>
-    <div>
-        <input type="submit" value="Сохранить" />
+    <div class="formslabel">
+        <input class="button" type="submit" value="Сохранить" />
     </div>
 </form>

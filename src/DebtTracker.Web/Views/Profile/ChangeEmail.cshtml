@@ -2,16 +2,16 @@
 
 
 <form class="forms" method="post" asp-controller="Profile" asp-action="ChangeEmail">
-    <div>
+    <div class="formslabel">
         <p>Текущий Email</p>
         <p>@Model.Email</p>
     </div>
-    <div>
+    <div class="formslabel">
         <label asp-for="Email">Введите новый Email:</label><br />
         <input asp-for="Email" />
         <span asp-validation-for="Email"></span>
     </div>
-    <div>
-        <input type="submit" value="Сохранить" />
+    <div class="formslabel">
+        <input class="button" type="submit" value="Сохранить" />
     </div>
 </form>

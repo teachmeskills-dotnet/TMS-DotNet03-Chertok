@@ -75,5 +75,12 @@ namespace DebtTracker.BLL.Interfaces
         /// <param name="profileId"></param>
         /// <returns>result</returns>
         Task<Boolean> CheckUserInTransactionAsync(int transactionsId, int profileId);
+
+        /// <summary>
+        /// Check contains transaction any users 
+        /// </summary>
+        /// <param name="transactionsId"></param>
+        /// <returns></returns>
+        Task<Boolean> CheckUsersInTransactionAsync(int transactionsId);
     }
 }

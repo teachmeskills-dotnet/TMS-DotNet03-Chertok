@@ -82,13 +82,15 @@
     align-items: center;
 }
 
-.transaction__red {
+.transaction_red {
     margin: 3px;
     padding: 3px;
     border-color: rgba(0,0,0,0.3);
     border-radius: 5px;
     border-style: solid;
-    background-color: red;
+    display: flex;
+    align-items: center;
+    background-color: hsla(0, 85%, 63%, 0.877);
 }
 
 .group__user{

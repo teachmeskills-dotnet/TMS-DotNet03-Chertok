@@ -44,8 +44,16 @@
     <div class="transactionlist">
         @foreach (var transaction in Model.Transactions.Reverse())
         {
-        
-            <form class="transaction" asp-controller="Group" asp-action="Index">
+
+            var statusMainClass = transaction.Status
+            ? "transaction"
+            : "transaction_red";
+
+            var commentMainClass = !transaction.Status
+            ? "Не внесено ниодного пользователя"
+            : "";
+
+            <form class="@statusMainClass" asp-controller="Group" asp-action="Index">
                 <div class="group_transaction_detail">
                     <a asp-controller="Transaction" asp-action="Index" asp-route-id="@transaction.Id">
                         <span>@transaction.Description</span>
@@ -53,11 +61,11 @@
 
                     @if (transaction.Comment != null)
                     {
-                        <p>Комментарий: @transaction.Comment; Сумма: @transaction.Amount</p>
+                        <p>Комментарий: @transaction.Comment; Сумма: @transaction.Amount <br/>@commentMainClass</p>
                     }
                     else
                     {
-                        <p>Сумма: @transaction.Amount</p>
+                <p>Сумма: @transaction.Amount @commentMainClass</p>
                     }
                 </div>
                 <div class="group__action">

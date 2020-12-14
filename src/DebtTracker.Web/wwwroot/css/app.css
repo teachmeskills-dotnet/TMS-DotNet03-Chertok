@@ -61,14 +61,45 @@ label{
     width: 208px;
     height: 25px;
     top: 1px;
+    background: url("../images/Profile.svg") no-repeat;
+    border:none;
 }
 
-.login {
+.profile:hover{
+    background:url("../images/Profile_click.svg") no-repeat;
+}
+
+.register {
+    left: 0%;
+    width: 208px;
+    height: 25px;
+    top: 1px;
+    background: url("../images/Account_register.svg") no-repeat;
+    border: none;
+}
+
+    .register:hover {
+        background: url("../images/Account_register_click.svg") no-repeat;
+    }
+/*.login {
     left: 70%;
     width: 108px;
     height: 25px;
     top: 1px;
+}*/
+
+.login {
+    left: 70%;
+    width: 98px;
+    height: 25px;
+    top: 1px;
+    background: url(/images/Account_enter.svg);
+    border: none;
 }
+
+    .login:hover {
+        background: url(/images/Account_enter_click.svg);
+    }
 
 .accountbottom {
     cursor: pointer;
@@ -92,6 +123,10 @@ label{
     top: 1px;
     background:url(/images/Account_exit.svg);
     border:none;
+}
+
+.accountbottomexit:hover{
+    background:url(/images/Account_exit_click.svg)
 }
 
 .forms {
@@ -126,6 +161,10 @@ label{
     color: rgb(2, 61, 61);
     margin: 10px;
 }
+
+    .button:hover {
+        background: #559dff;
+    }
 
 .formslabel{
     margin:8px;

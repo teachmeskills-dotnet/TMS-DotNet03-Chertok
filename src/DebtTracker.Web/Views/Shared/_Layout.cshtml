@@ -16,22 +16,21 @@
             <div class="account">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a class="profile" asp-controller="Profile" asp-action="Profile">
-                        <img title="Профиль" src="/images/Profile.svg" />
-                    </a>
-
-                    <form class="login" method="post" asp-controller="Account" asp-action="Logout">
+                    <form method="get" asp-controller="Profile" asp-action="Profile">
+                        <button class="profile" type="submit"></button>
+                    </form>
+                    <form method="post" asp-controller="Account" asp-action="Logout">
                         <button class="accountbottomexit" type="submit"></button>
                     </form>
                 }
                 else
                 {
-                    <a class="profile" asp-controller="Account" asp-action="Register">
-                        <img title="Зарегестрироваться" src="/images/Account_register.svg" />
-                    </a>
-                    <a class="login" asp-controller="Account" asp-action="Login">
-                        <img title="Вход" src="/images/Account_enter.svg" />
-                    </a>
+                    <form method="get" asp-controller="Account" asp-action="Register">
+                        <button class="register" type="submit" title="Зарегестрироваться"></button>
+                    </form>
+                    <form method="get" asp-controller="Account" asp-action="Login">
+                        <button class="login" type="submit" title="Вход"></button>
+                    </form>
                 }
             </div>
             </div>

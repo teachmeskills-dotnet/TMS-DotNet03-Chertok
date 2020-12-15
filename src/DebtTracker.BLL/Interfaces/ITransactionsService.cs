@@ -1,5 +1,4 @@
 ﻿using DebtTracker.BLL.Models;
-using DebtTracker.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -77,7 +76,7 @@ namespace DebtTracker.BLL.Interfaces
         Task<Boolean> CheckUserInTransactionAsync(int transactionsId, int profileId);
 
         /// <summary>
-        /// Check contains transaction any users 
+        /// Check contains transaction any users
         /// </summary>
         /// <param name="transactionsId"></param>
         /// <returns></returns>

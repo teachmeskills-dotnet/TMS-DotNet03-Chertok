@@ -16,6 +16,7 @@ namespace DebtTracker.BLL.Services
     {
         private readonly IRepository<Transactions> _repository;
         private readonly IRepository<TransactionProfiles> _repositoryTransactionProfiles;
+
         public TransactionsService(IRepository<Transactions> repository, IRepository<TransactionProfiles> repositoryTransactionProfiles)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -157,7 +158,6 @@ namespace DebtTracker.BLL.Services
             {
                 TransactionId = transaction.Id,
                 ProfileId = transactionProfiles.ProfileId
-
             };
 
             var transactionProfile = await _repositoryTransactionProfiles.GetEntityAsync(
@@ -252,7 +252,7 @@ namespace DebtTracker.BLL.Services
                             });
                         }
                     }
-                }              
+                }
             }
 
             var usersScore = transactionsAmounth
@@ -280,7 +280,8 @@ namespace DebtTracker.BLL.Services
                         }
                     }
                 }
-                else {
+                else
+                {
                     scoreResult.Add(new Score
                     {
                         Creditor = scoretransaction.Creditor,

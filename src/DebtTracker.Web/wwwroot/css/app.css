@@ -4,16 +4,14 @@
     margin: 0;
     padding: 0;
     font-family: "Lobster", sans-serif;
-
 }
 
-a{
-text-decoration:none;
+a {
+    text-decoration: none;
 }
 
 html {
     margin: 0;
-
 }
 
 body {
@@ -24,7 +22,7 @@ body {
     height: 100%;
     background: url("../images/road.jpg") no-repeat;
     background-size: cover;
-    min-height:360pt;
+    min-height: 360pt;
 }
 
 .header {
@@ -32,10 +30,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top:3%;
+    margin-top: 3%;
 }
-label{
-    margin-top:30px;
+
+label {
+    margin-top: 30px;
 }
 
 .wrapper {
@@ -47,7 +46,7 @@ label{
     width: 108px;
     height: 24px;
     top: 0px;
-    margin-left:5%;
+    margin-left: 5%;
 }
 
 .account {
@@ -55,7 +54,7 @@ label{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-right:5%;
+    margin-right: 5%;
 }
 
 .profile {
@@ -64,12 +63,12 @@ label{
     height: 25px;
     top: 1px;
     background: url("../images/Profile.svg") no-repeat;
-    border:none;
+    border: none;
 }
 
-.profile:hover{
-    background:url("../images/Profile_click.svg") no-repeat;
-}
+    .profile:hover {
+        background: url("../images/Profile_click.svg") no-repeat;
+    }
 
 .register {
     left: 0%;
@@ -123,21 +122,21 @@ label{
     height: 24px;
     right: 50px;
     top: 1px;
-    background:url(/images/Account_exit.svg);
-    border:none;
+    background: url(/images/Account_exit.svg);
+    border: none;
 }
 
-.accountbottomexit:hover{
-    background:url(/images/Account_exit_click.svg)
-}
+    .accountbottomexit:hover {
+        background: url(/images/Account_exit_click.svg)
+    }
 
 .forms {
     margin: auto;
     margin-top: 10%;
     padding: 20px;
     width: 40%;
-    text-align:left;
-    margin-left:40%;
+    text-align: left;
+    margin-left: 40%;
 }
 
 .greeting {
@@ -147,7 +146,7 @@ label{
 }
 
 .groupicon {
-    margin:0 auto;
+    margin: 0 auto;
     margin-top: 10%;
 }
 
@@ -168,8 +167,8 @@ label{
         background: #559dff;
     }
 
-.formslabel{
-    margin:8px;
+.formslabel {
+    margin: 8px;
 }
 
 .forms__bottom {
@@ -184,21 +183,21 @@ label{
     padding: 40px;
 }
 
-.changeprofile{
-    display:grid;
+.changeprofile {
+    display: grid;
     align-items: center;
-    text-align: left;        
+    text-align: left;
 }
 
-.formprofile{
+.formprofile {
     margin-left: auto;
     margin-right: auto;
 }
 
-.a_element{
+.a_element {
     display: flex;
 }
 
-.a_text{
+.a_text {
     margin-left: 3pt;
 }

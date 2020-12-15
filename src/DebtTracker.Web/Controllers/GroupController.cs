@@ -70,7 +70,7 @@ namespace DebtTracker.Web.Controllers
         }
 
         /// <summary>
-        /// Create group 
+        /// Create group
         /// </summary>
         /// <param name="model"></param>
         /// <returns>Rezult create</returns>
@@ -123,10 +123,12 @@ namespace DebtTracker.Web.Controllers
                         "Group",
                         new { groupHash = groupDto.Guid },
                         protocol: HttpContext.Request.Scheme);
-           
-            foreach (var transaction in scoreList ) {
+
+            foreach (var transaction in scoreList)
+            {
                 var user = await _profileService.GetProfileById(transaction.Creditor);
-                userScore.Add( new UsersScore {
+                userScore.Add(new UsersScore
+                {
                     LastNameCreditor = user.LastName,
                     FirstNameCreditor = user.FirstName,
                     Summ = transaction.Summ
@@ -149,10 +151,10 @@ namespace DebtTracker.Web.Controllers
                 });
             }
 
-            foreach(var transaction in transactionsDto)
+            foreach (var transaction in transactionsDto)
             {
                 var transactionStatus = await _transactionsService.CheckUsersInTransactionAsync(transaction.Id);
-                transactionsUser.Add( new UsersTransaction
+                transactionsUser.Add(new UsersTransaction
                 {
                     Id = transaction.Id,
                     Description = transaction.Description,
@@ -239,17 +241,17 @@ namespace DebtTracker.Web.Controllers
             var user = await _userManager.FindByNameAsync(username);
             var profile = await _profileService.GetProfileByUserId(user.Id);
             var groupDto = await _groupService.GetGroupByGuidAsync(groupHash);
-           
+
             var groupProfileDto = new GroupProfilesDto
             {
                 ProfileId = profile.Id,
                 GroupId = groupDto.Id,
-             
             };
 
             var checkDouble = await _groupService.CheckDoubleAsyncProfileToGroup(groupProfileDto);
 
-            if (checkDouble) {
+            if (checkDouble)
+            {
                 await _groupService.AddAsyncProfileToGroup(groupProfileDto);
                 return RedirectToAction("Index", "Group");
             }

@@ -1,5 +1,4 @@
-﻿
-.group {
+﻿.group {
     padding: 20px 20px;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 5px;
@@ -7,7 +6,7 @@
     margin-left: auto;
     margin-right: auto;
     width: 40%;
-    display:flex;
+    display: flex;
 }
 
 .group__indent-bottom {
@@ -34,16 +33,14 @@
     background: rgba(255, 255, 255, 0.3);
     border-radius: 5px;
     margin-left: 5%;
-    
 }
 
 .transactionlist {
     padding: 20px 20px;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 5px;
-    margin:1%;
-    width:auto;
-    
+    margin: 1%;
+    width: auto;
 }
 
 .userssumm {
@@ -51,15 +48,14 @@
     background: rgba(255, 255, 255, 0.3);
     border-radius: 5px;
     margin-left: 5%;
-    margin-top:10px;
-    
+    margin-top: 10px;
 }
 
 .usersscore {
     padding: 20px 20px;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 5px;
-    margin:1%;
+    margin: 1%;
 }
 
 .groupdetail__wrapper {
@@ -67,9 +63,9 @@
     justify-content: space-between;
 }
 
-.firstsection{
+.firstsection {
     width: auto;
-    margin:1%;
+    margin: 1%;
 }
 
 .transaction {
@@ -93,8 +89,8 @@
     background-color: hsla(0, 85%, 63%, 0.877);
 }
 
-.group__user{
-    width:auto;
+.group__user {
+    width: auto;
 }
 
 .group__action {
@@ -103,10 +99,10 @@
     padding: 3px;
 }
 
-.group_transaction_detail{
-    margin-left:3px;
-    margin-right:auto;
-    padding:3px;
+.group_transaction_detail {
+    margin-left: 3px;
+    margin-right: auto;
+    padding: 3px;
 }
 
 .group__watch {

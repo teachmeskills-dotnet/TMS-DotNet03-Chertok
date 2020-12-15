@@ -2,7 +2,6 @@
 using DebtTracker.BLL.Models;
 using DebtTracker.Common.Interfaces;
 using DebtTracker.DAL.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -19,6 +18,7 @@ namespace DebtTracker.BLL.Services
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
+
         public async Task AddAsync(ProfileDto profile)
         {
             if (profile is null)
@@ -35,7 +35,6 @@ namespace DebtTracker.BLL.Services
 
             await _repository.AddAsync(userProfile);
             await _repository.SaveChangesAsync();
-
         }
 
         public async Task Edit(ProfileDto profile)
@@ -50,7 +49,7 @@ namespace DebtTracker.BLL.Services
             editProfile.MiddleName = profile.MiddleName;
             editProfile.LastName = profile.LastName;
             _repository.Update(editProfile);
-            await _repository.SaveChangesAsync();            
+            await _repository.SaveChangesAsync();
         }
 
         public async Task<ProfileDto> GetProfileByUserId(string userId)
@@ -81,7 +80,7 @@ namespace DebtTracker.BLL.Services
         public async Task<ProfileDto> GetProfileById(int profileId)
         {
             var profileDataModel = await _repository.GetEntityAsync(transactionModel => transactionModel.Id == profileId);
-            
+
             if (profileDataModel is null)
             {
                 return new ProfileDto();

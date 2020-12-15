@@ -36,17 +36,18 @@ namespace DebtTracker.BLL.Services
                 ProfileId = group.ProfileId,
                 Title = group.Title,
                 Description = group.Description,
-                Guid=groupGuid,
+                Guid = groupGuid,
             };
-           
+
             await _repository.AddAsync(groupModel);
             await _repository.SaveChangesAsync();
 
             var getGroup = await _repository.GetEntityWithoutTrackingAsync(group => group.Title == groupModel.Title && group.Guid == groupModel.Guid);
 
-            var groupProfileModel = new GroupProfiles {
-               ProfileId = getGroup.ProfileId,
-               GroupId = getGroup.Id
+            var groupProfileModel = new GroupProfiles
+            {
+                ProfileId = getGroup.ProfileId,
+                GroupId = getGroup.Id
             };
 
             await _repositoryGroupProfiles.AddAsync(groupProfileModel);
@@ -64,7 +65,6 @@ namespace DebtTracker.BLL.Services
             editGroup.Description = group.Description;
             _repository.Update(editGroup);
             await _repository.SaveChangesAsync();
-
         }
 
         public async Task<GroupsDto> GetGroupAsync(int id)
@@ -131,7 +131,6 @@ namespace DebtTracker.BLL.Services
                         Description = groupdto.Description
                     });
                 };
-
             }
 
             return groupDtos;
@@ -139,7 +138,6 @@ namespace DebtTracker.BLL.Services
 
         public async Task<IEnumerable<ProfileDto>> GetAsyncProfilesByGroup(int groupId)
         {
-
             var profileDtos = new List<ProfileDto>();
             var groupsProfileDtos = new List<GroupProfilesDto>();
             var GroupProfilesDtos = await _repositoryGroupProfiles
@@ -186,7 +184,6 @@ namespace DebtTracker.BLL.Services
                         UserId = profileDto.UserId,
                     });
                 };
-
             }
 
             return profileDtos;
@@ -234,10 +231,12 @@ namespace DebtTracker.BLL.Services
             }
 
             var getUserGroup = await _repositoryGroupProfiles.GetEntityWithoutTrackingAsync(groupProfile => groupProfile.ProfileId == groupProfiles.ProfileId && groupProfile.GroupId == groupProfiles.GroupId);
-            if (getUserGroup!=null) {
+            if (getUserGroup != null)
+            {
                 return false;
             }
-            else {
+            else
+            {
                 return true;
             }
         }

@@ -17,6 +17,5 @@
         /// Groups identifier.
         /// </summary>
         public int TransactionId { get; set; }
-
     }
 }

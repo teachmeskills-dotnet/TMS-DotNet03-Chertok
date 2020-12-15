@@ -13,16 +13,18 @@ text-decoration:none;
 
 html {
     margin: 0;
+
+}
+
+body {
+    height: auto;
+    width: auto;
+    text-align: center;
+    top: 20%;
     height: 100%;
     background: url("../images/road.jpg") no-repeat;
     background-size: cover;
-}
-
-body{
-    height:auto;
-    width:auto;
-    text-align:center;
-    top:20%;
+    min-height:360pt;
 }
 
 .header {

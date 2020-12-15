@@ -45,7 +45,8 @@ namespace DebtTracker.Web.Controllers
             var user = await _userManager.FindByNameAsync(username);
             var profile = await _profileService.GetProfileByUserId(user.Id);
             var model = new ProfileViewModel { FirstName = profile.FirstName, LastName = profile.LastName, MiddleName = profile.MiddleName, Email = user.Email, Phone = user.PhoneNumber, EmailConfigm = user.EmailConfirmed };
-            if (user.EmailConfirmed) {
+            if (user.EmailConfirmed)
+            {
                 model.EmailConfigm = true;
                 return View(model);
             }
@@ -78,15 +79,16 @@ namespace DebtTracker.Web.Controllers
             var username = User.Identity.Name;
             var user = await _userManager.FindByNameAsync(username);
             var getProfile = await _profileService.GetProfileByUserId(user.Id);
-            
-            var profile = new ProfileDto {
-            Id = getProfile.Id,
-            FirstName = editProfile.FirstName,
-            LastName = editProfile.LastName,
-            MiddleName = editProfile.MiddleName,
+
+            var profile = new ProfileDto
+            {
+                Id = getProfile.Id,
+                FirstName = editProfile.FirstName,
+                LastName = editProfile.LastName,
+                MiddleName = editProfile.MiddleName,
             };
 
-                await _profileService.Edit(profile);
+            await _profileService.Edit(profile);
             return RedirectToAction("Profile");
         }
 
@@ -100,7 +102,7 @@ namespace DebtTracker.Web.Controllers
         {
             var username = User.Identity.Name;
             var user = await _userManager.FindByNameAsync(username);
-            
+
             var model = new ProfileViewModel { Phone = user.PhoneNumber };
             return View(model);
         }
@@ -115,8 +117,8 @@ namespace DebtTracker.Web.Controllers
         public async Task<IActionResult> ChangePhoneNumber(ProfileViewModel number)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            
-                user.PhoneNumber = number.Phone;
+
+            user.PhoneNumber = number.Phone;
             await _userManager.UpdateAsync(user);
             return RedirectToAction("Profile");
         }
@@ -162,9 +164,9 @@ namespace DebtTracker.Web.Controllers
             await _emailService.SendEmailAsync(model.Email, "Подтвердите ваш email",
                     $"Подтвердите адрес электронной почты, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
 
-                return Content("Для подтверждения email адреса проверьте электронную почту и перейдите по ссылке, указанной в письме");
+            return Content("Для подтверждения email адреса проверьте электронную почту и перейдите по ссылке, указанной в письме");
         }
-        
+
         /// <summary>
         /// Configm and change email
         /// </summary>
@@ -177,7 +179,7 @@ namespace DebtTracker.Web.Controllers
         public async Task<IActionResult> ChangeEmailToken([FromQuery] string code, [FromQuery] string oldEmail, [FromQuery] string newEmail)
         {
             var user = await _userManager.FindByEmailAsync(oldEmail);
-            var result =  await _userManager.ChangeEmailAsync(user, newEmail, code);
+            var result = await _userManager.ChangeEmailAsync(user, newEmail, code);
             if (result.Succeeded)
             {
                 return RedirectToAction("Profile", "Profile");
@@ -189,7 +191,7 @@ namespace DebtTracker.Web.Controllers
         }
 
         /// <summary>
-        /// Request email 
+        /// Request email
         /// </summary>
         /// <returns></returns>
         public IActionResult RequestEmail()
@@ -220,7 +222,6 @@ namespace DebtTracker.Web.Controllers
                     $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
 
                 return Content("Для подтверждения email адреса проверьте электронную почту и перейдите по ссылке, указанной в письме");
-
             }
             return View(model);
         }

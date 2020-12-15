@@ -23,7 +23,6 @@ namespace DebtTracker.DAL.Configurations
                 .IsRequired()
                 .HasMaxLength(ConfigurationContants.SqlMaxLengthMedium);
 
-
             builder.Property(transaction => transaction.Comment)
                 .HasMaxLength(ConfigurationContants.SqlMaxLengthMedium);
 

@@ -10,14 +10,14 @@ namespace DebtTracker.Web.ViewModels
         /// <summary>
         /// Login
         /// </summary>
-        [Required]
-        [Display(Name = "Логин")]
+        [Required(ErrorMessage = "Имя пользователя не может быть пустым")]
+        [Display(Name = "Имя пользователя")]
         public string UserName { get; set; }
 
         /// <summary>
         /// Password
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Пароль не может быть пустым")]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
         public string Password { get; set; }

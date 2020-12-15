@@ -1,17 +1,18 @@
 ﻿using DebtTracker.BLL.Interfaces;
 using DebtTracker.BLL.Models;
 using DebtTracker.DAL.Models;
+using DebtTracker.Web.Models;
 using DebtTracker.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DebtTracker.Web.Controllers
 {
     public class TransactionController : Controller
     {
-
         private readonly UserManager<User> _userManager;
         private readonly IProfileService _profileService;
         private readonly IGroupService _groupService;
@@ -71,7 +72,7 @@ namespace DebtTracker.Web.Controllers
         }
 
         /// <summary>
-        /// Create transaction 
+        /// Create transaction
         /// </summary>
         /// <param name="model"></param>
         /// <returns>Rezult create</returns>
@@ -95,7 +96,6 @@ namespace DebtTracker.Web.Controllers
                     CreationTime = DateTime.Now,
                     ProfileId = profile.Id,
                     GroupId = model.GroupId,
-
                 };
 
                 await _transactionsService.AddAsync(transactionDto);
@@ -139,7 +139,7 @@ namespace DebtTracker.Web.Controllers
             if (ModelState.IsValid)
             {
                 var transactionDto = new TransactionsDto
-                {   
+                {
                     Id = model.Id,
                     Description = model.Description,
                     Comment = model.Comment,
@@ -162,6 +162,21 @@ namespace DebtTracker.Web.Controllers
         {
             var transactionDto = await _transactionsService.GetTransactionAsync(id);
             var profilesDto = await _groupService.GetAsyncProfilesByGroup(transactionDto.GroupId);
+            var profiles = new List<UserProfileModel>();
+
+            foreach (var profileDto in profilesDto)
+            {
+                var userStatus = await _transactionsService.CheckUserInTransactionAsync(id, profileDto.Id);
+                profiles.Add(new UserProfileModel
+                {
+                    Id = profileDto.Id,
+                    UserId = profileDto.UserId,
+                    LastName = profileDto.LastName,
+                    FirstName = profileDto.FirstName,
+                    MiddleName = profileDto.MiddleName,
+                    UserStatus = userStatus
+                });
+            }
 
             var transactionViewModel = new TransactionViewModel
             {
@@ -173,7 +188,7 @@ namespace DebtTracker.Web.Controllers
                 CreationTime = transactionDto.CreationTime,
                 ProfileId = transactionDto.ProfileId,
                 GroupId = transactionDto.GroupId,
-                Profiles = profilesDto
+                Profiles = profiles
             };
 
             return View(transactionViewModel);
@@ -189,7 +204,7 @@ namespace DebtTracker.Web.Controllers
             var transactionProfileDto = new TransactionProfilesDto
             {
                 TransactionId = transactionId,
-                ProfileId = profileId,               
+                ProfileId = profileId,
             };
 
             await _transactionsService.AddUserToTransactionAsync(transactionProfileDto);
@@ -222,12 +237,12 @@ namespace DebtTracker.Web.Controllers
         {
             var transactionsDto = new TransactionsDto
             {
-                Id = transactionId,          
+                Id = transactionId,
             };
 
             var transaction = await _transactionsService.GetTransactionAsync(transactionId);
             await _transactionsService.DeleteTransactionAsync(transactionsDto);
-            return RedirectToAction("Detail", "Group", new { id = transaction.GroupId});
+            return RedirectToAction("Detail", "Group", new { id = transaction.GroupId });
         }
     }
 }

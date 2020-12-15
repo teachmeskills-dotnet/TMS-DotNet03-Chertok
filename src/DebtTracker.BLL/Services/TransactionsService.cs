@@ -16,6 +16,7 @@ namespace DebtTracker.BLL.Services
     {
         private readonly IRepository<Transactions> _repository;
         private readonly IRepository<TransactionProfiles> _repositoryTransactionProfiles;
+
         public TransactionsService(IRepository<Transactions> repository, IRepository<TransactionProfiles> repositoryTransactionProfiles)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -157,7 +158,6 @@ namespace DebtTracker.BLL.Services
             {
                 TransactionId = transaction.Id,
                 ProfileId = transactionProfiles.ProfileId
-
             };
 
             var transactionProfile = await _repositoryTransactionProfiles.GetEntityAsync(
@@ -252,7 +252,7 @@ namespace DebtTracker.BLL.Services
                             });
                         }
                     }
-                }              
+                }
             }
 
             var usersScore = transactionsAmounth
@@ -280,7 +280,8 @@ namespace DebtTracker.BLL.Services
                         }
                     }
                 }
-                else {
+                else
+                {
                     scoreResult.Add(new Score
                     {
                         Creditor = scoretransaction.Creditor,
@@ -291,6 +292,35 @@ namespace DebtTracker.BLL.Services
             }
 
             return scoreResult;
+        }
+
+        public async Task<Boolean> CheckUserInTransactionAsync(int transactionsId, int profileId)
+        {
+            var transactionProfile = await _repositoryTransactionProfiles.GetEntityAsync(
+                transactionprofile => transactionprofile.ProfileId == profileId
+                && transactionprofile.TransactionId == transactionsId);
+            if (transactionProfile is null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public async Task<Boolean> CheckUsersInTransactionAsync(int transactionsId)
+        {
+            var transactionProfile = await _repositoryTransactionProfiles.GetEntityAsync(
+                transactionprofile => transactionprofile.TransactionId == transactionsId);
+            if (transactionProfile is null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

@@ -1,8 +1,6 @@
-﻿using DebtTracker.BLL.Models;
+﻿using DebtTracker.Web.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DebtTracker.Web.ViewModels
 {
@@ -52,6 +50,6 @@ namespace DebtTracker.Web.ViewModels
         /// <summary>
         /// Profiles
         /// </summary>
-        public IEnumerable<ProfileDto> Profiles { get; set; }
+        public IEnumerable<UserProfileModel> Profiles { get; set; }
     }
 }

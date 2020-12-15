@@ -1,0 +1,41 @@
+﻿.transaction__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.transaction__userlist {
+    padding: 20px 20px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.transaction__transaction {
+    margin: 3px;
+    padding: 10px;
+    border-color: rgba(0,0,0,0.3);
+    border-radius: 5px;
+    border-style: solid;
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
+
+.transaction__action {
+    margin-right: 5px;
+    width: auto;
+    margin-left: auto;
+    padding: 5px;
+}
+
+.transaction__text {
+    border-color: darkblue;
+    width: auto;
+    margin: 5px;
+}
+
+.transaction__transaction_green {
+    background: rgba(91, 201, 102,0.3);
+}

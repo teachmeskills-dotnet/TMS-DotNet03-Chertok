@@ -11,7 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-
 namespace DebtTracker.Web
 {
     public class Startup
@@ -25,7 +24,6 @@ namespace DebtTracker.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IProfileService, ProfileService>();
@@ -39,7 +37,6 @@ namespace DebtTracker.Web
                 .AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
-
         }
 
         public void Configure(IApplicationBuilder app)

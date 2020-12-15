@@ -29,6 +29,5 @@
         /// Transaction Users.
         /// </summary>
         public const string TransactionUsers = nameof(TransactionUsers);
-
     }
 }

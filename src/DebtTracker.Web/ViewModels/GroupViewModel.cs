@@ -34,7 +34,7 @@ namespace DebtTracker.Web.ViewModels
         /// <summary>
         /// Users
         /// </summary>
-        public IEnumerable<TransactionsDto> Transactions { get; set; }
+        public IEnumerable<UsersTransaction> Transactions { get; set; }
 
         /// <summary>
         /// Scores

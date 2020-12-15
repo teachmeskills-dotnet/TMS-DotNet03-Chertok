@@ -1,34 +1,40 @@
 ﻿@model ProfileViewModel
 
-<h2>Вход в приложение</h2>
-<form asp-controller="Profile" asp-action="Profile">
-    <div>
-        <p> LastName: @Model.LastName</p>
-    </div>
-    <div>
-        <p> FirstName: @Model.FirstName</p>
-    </div>
-    <div>
-        <p> MiddleName: @Model.MiddleName</p>
-    </div>
-    <div>
-        <p> Phone: @Model.Phone</p>
-    </div>
-    <div>
-        <p> Email: @Model.Email</p>
+<div class="wrapper_profile">
+    <form class="formprofile" asp-controller="Profile" asp-action="Profile">
+        <div class="formslabel">
+            <p>
+                Фамилия: @Model.FirstName
+            </p>
+        </div>
+        <div class="formslabel">
+            <p> Имя: @Model.LastName</p>
+        </div>
+        <div class="formslabel">
+            <p> Отчество: @Model.MiddleName</p>
+        </div>
+        <div class="formslabel">
+            <p> Номер телефона: @Model.Phone</p>
+        </div>
+        <div class="formslabel">
+            <p> Email: @Model.Email</p>
 
-        @if (Model.EmailConfigm == false)
-        {
-            <p>Email не подтвержден</p>
-            <a asp-controller="Profile" asp-action="RequestEmail">Запрос подтверждения Email</a>
-        }
+            @if (Model.EmailConfigm == false)
+            {
+                <p>Email не подтвержден</p>
+                <a asp-controller="Profile" asp-action="RequestEmail">Запрос подтверждения Email</a>
+            }
+        </div>
+    </form>
+
+    <div class="changeprofile">
+        <a class="a_element" asp-controller="Profile" asp-action="EditProfile">
+        <img title="Просмотр" src="/images/Change_Profile.svg" /> <p class="a_text">Изменить профиль</p></a>
+        <a class="a_element" asp-controller="Profile" asp-action="ChangePhoneNumber">
+            <img title="Просмотр" src="/images/Call.svg" /><p class="a_text">Изменить номер телефона</p></a>
+        <a class="a_element" asp-controller="Profile" asp-action="ChangeEmail">
+            <img title="Просмотр" src="/images/Message.svg" /><p class="a_text">Изменить email</p></a>
+        <a class="a_element" asp-controller="Account" asp-action="ChangePassword">
+            <img title="Просмотр" src="/images/Password.svg" /><p class="a_text">Изменить пароль</p></a>
     </div>
-    <div>
-        <a asp-controller="Profile" asp-action="EditProfile">Изменить профиль</a>
-        <a asp-controller="Profile" asp-action="ChangePhoneNumber">Изменить номер телефона</a>
-        <a asp-controller="Profile" asp-action="ChangeEmail">Изменить email</a>
-    </div>
-    <div>
-        <a asp-controller="Group" asp-action="Index">События</a>
-    </div>
-</form>
+</div>

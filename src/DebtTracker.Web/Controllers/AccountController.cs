@@ -16,7 +16,6 @@ namespace DebtTracker.Web.Controllers
     /// </summary>
     public class AccountController : Controller
     {
-        
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailService _emailService;
@@ -59,7 +58,6 @@ namespace DebtTracker.Web.Controllers
                 var user = new User { Email = model.Email, PhoneNumber = model.PhoneNumber, UserName = model.UserName };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
-                
 
                 if (result.Succeeded)
                 {
@@ -75,7 +73,7 @@ namespace DebtTracker.Web.Controllers
                         "Account",
                         new { userId = user.Id, code = code },
                         protocol: HttpContext.Request.Scheme);
-                    
+
                     await _emailService.SendEmailAsync(model.Email, "Confirm your account",
                         $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
 
@@ -140,7 +138,6 @@ namespace DebtTracker.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 var result =
                     await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
@@ -202,14 +199,14 @@ namespace DebtTracker.Web.Controllers
             {
                 var username = HttpContext.User.Identity.Name;
                 User user = await _userManager.FindByNameAsync(username);
-               
+
                 if (user != null)
                 {
                     IdentityResult result =
                         await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index","Home");
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
@@ -257,7 +254,7 @@ namespace DebtTracker.Web.Controllers
                 }
 
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Action("ResetPassword", 
+                var callbackUrl = Url.Action("ResetPassword",
                     "Account",
                     new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
 
@@ -312,4 +309,3 @@ namespace DebtTracker.Web.Controllers
         }
     }
 }
-

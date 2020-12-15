@@ -6,7 +6,6 @@ namespace DebtTracker.Web.ViewModels
 {
     public class TransactionActionViewModel
     {
-
         /// <summary>
         /// Identifier.
         /// </summary>

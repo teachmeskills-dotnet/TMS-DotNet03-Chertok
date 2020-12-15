@@ -10,7 +10,7 @@ namespace DebtTracker.Web.ViewModels
         /// <summary>
         /// Email
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Поле не может быть пустым")]
         [EmailAddress]
         public string Email { get; set; }
     }

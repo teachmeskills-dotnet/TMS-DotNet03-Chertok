@@ -17,6 +17,5 @@
         /// Groups identifier.
         /// </summary>
         public int GroupId { get; set; }
-
     }
 }

@@ -201,3 +201,7 @@ label {
 .a_text {
     margin-left: 3pt;
 }
+
+.text_greeting {
+    color: rgb(120, 95, 161);
+}

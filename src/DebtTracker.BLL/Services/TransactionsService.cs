@@ -175,7 +175,9 @@ namespace DebtTracker.BLL.Services
 
         public async Task DeleteUserToTransactionAsync(TransactionProfilesDto transactionProfiles)
         {
-            var transactionProfileModel = await _repositoryTransactionProfiles.GetEntityAsync(transaction => transaction.TransactionId == transactionProfiles.TransactionId && transaction.ProfileId == transactionProfiles.ProfileId);
+            var transactionProfileModel = await _repositoryTransactionProfiles.GetEntityAsync(
+                    transaction => transaction.TransactionId == transactionProfiles.TransactionId
+                    && transaction.ProfileId == transactionProfiles.ProfileId);
             if (transactionProfileModel is null)
             {
                 return;

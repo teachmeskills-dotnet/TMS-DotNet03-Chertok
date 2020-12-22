@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace DebtTracker.Web.Controllers
 {
+    /// <summary>
+    /// Group controller.
+    /// </summary>
     public class GroupController : Controller
     {
         private readonly UserManager<User> _userManager;

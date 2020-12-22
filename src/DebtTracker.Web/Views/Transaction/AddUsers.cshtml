@@ -13,8 +13,8 @@
     <div class="transaction__userlist">
         @if (Model.Profiles.Any())
         {
-              foreach (var profile in Model.Profiles)
-                {
+            foreach (var profile in Model.Profiles)
+            {
                 @if (profile.UserStatus)
                 {
                     <a asp-controller="Transaction" asp-action="DeleteUser" asp-route-transactionId="@Model.Id" asp-route-profileId="@profile.Id">
@@ -41,10 +41,10 @@
                         </div>
                     </a>
                 }
-                }
-                }
-            </div>
-        </div>
+            }
+        }
+    </div>
+</div>
 
 @section css {
     <link href="~/css/transactions.css" rel="stylesheet" asp-append-version="true" />

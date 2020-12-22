@@ -36,7 +36,7 @@
         <div class="userssumm">
             @foreach (var payment in Model.Scores)
             {
-            <div>@payment.FirstNameCreditor @payment.LastNameCreditor</div>
+                <div>@payment.FirstNameCreditor @payment.LastNameCreditor</div>
                 <div>Внесено платежей на сумму: @payment.Summ</div>
             }
         </div>
@@ -65,7 +65,7 @@
                     }
                     else
                     {
-                <p>Сумма: @transaction.Amount @commentMainClass</p>
+                        <p>Сумма: @transaction.Amount @commentMainClass</p>
                     }
                 </div>
                 <div class="group__action">

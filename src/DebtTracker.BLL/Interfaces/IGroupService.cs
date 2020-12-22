@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace DebtTracker.BLL.Interfaces
 {
+    /// <summary>
+    /// Interface for group service.
+    /// </summary>
     public interface IGroupService
     {
         /// <summary>

@@ -1,5 +1,8 @@
 ﻿namespace DebtTracker.BLL.Models
 {
+    /// <summary>
+    /// Score data transfer object.
+    /// </summary>
     public class Score
     {
         /// <summary>

@@ -2,6 +2,9 @@
 
 namespace DebtTracker.Web.Models
 {
+    /// <summary>
+    /// User transaction model.
+    /// </summary>
     public class UsersTransaction
     {
         /// <inheritdoc/>

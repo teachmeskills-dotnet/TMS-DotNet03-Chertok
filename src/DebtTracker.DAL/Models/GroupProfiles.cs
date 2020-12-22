@@ -2,6 +2,9 @@
 
 namespace DebtTracker.DAL.Models
 {
+    /// <summary>
+    /// Group profile.
+    /// </summary>
     public class GroupProfiles : IHasDbIdentity
     {
         /// <inheritdoc/>

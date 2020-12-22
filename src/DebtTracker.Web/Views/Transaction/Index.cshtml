@@ -7,14 +7,14 @@
 }
 <h4>Сумма: @Model.Amount</h4>
 
-    <div>
-        <a asp-controller="Transaction" asp-action="Edit" asp-route-id="@Model.Id">
-            <input class="button" type="button" value="Редактировать" />
-        </a>
-        <a asp-controller="Group" asp-action="Detail" asp-route-id="@Model.GroupId">
-            <input class="button" type="button" value="Вернуться" />
-        </a>
-    </div>
+<div>
+    <a asp-controller="Transaction" asp-action="Edit" asp-route-id="@Model.Id">
+        <input class="button" type="button" value="Редактировать" />
+    </a>
+    <a asp-controller="Group" asp-action="Detail" asp-route-id="@Model.GroupId">
+        <input class="button" type="button" value="Вернуться" />
+    </a>
+</div>
 
 <div>
     <a asp-controller="Transaction" asp-action="AddUsers" asp-route-id="@Model.Id">

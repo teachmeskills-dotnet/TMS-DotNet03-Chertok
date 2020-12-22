@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace DebtTracker.BLL.Interfaces
 {
     /// <summary>
-    /// Service from controle user profile
+    /// Service from controle user profile.
     /// </summary>
     public interface IProfileService
     {

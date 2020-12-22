@@ -2,6 +2,9 @@
 
 namespace DebtTracker.DAL.Models
 {
+    /// <summary>
+    /// Transaction profiles.
+    /// </summary>
     public class TransactionProfiles : IHasDbIdentity
     {
         /// <inheritdoc/>

@@ -11,6 +11,10 @@ namespace DebtTracker.DAL.Context
     /// </summary>
     public class DebtTrackerContext : IdentityDbContext<User>
     {
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="options">Database context options.</param>
         public DebtTrackerContext(DbContextOptions<DebtTrackerContext> options)
             : base(options)
         {

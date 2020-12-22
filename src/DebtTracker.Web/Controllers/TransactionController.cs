@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace DebtTracker.Web.Controllers
 {
+    /// <summary>
+    /// Transaction controller.
+    /// </summary>
     public class TransactionController : Controller
     {
         private readonly UserManager<User> _userManager;

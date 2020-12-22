@@ -1,5 +1,8 @@
 ﻿namespace DebtTracker.Web.Models
 {
+    /// <summary>
+    /// Currency model.
+    /// </summary>
     public class CurrencyModel
     {
         /// <summary>

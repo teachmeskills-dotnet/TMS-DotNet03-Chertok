@@ -25,10 +25,12 @@ namespace DebtTracker.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<ITransactionsService, TransactionsService>();
+
             services.AddDbContext<DebtTrackerContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DebtTrackerDatabase")));
 
@@ -48,7 +50,7 @@ namespace DebtTracker.Web
 
             app.UseRouting();
 
-            app.UseAuthentication();    // add autentification
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

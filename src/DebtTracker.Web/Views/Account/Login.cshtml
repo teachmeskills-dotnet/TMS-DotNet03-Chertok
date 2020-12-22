@@ -1,21 +1,21 @@
 ﻿@model LoginViewModel
 
-    <form class="forms" method="post" asp-controller="Account" asp-action="Login"
-          asp-route-returnUrl="@Model.ReturnUrl">
-        <div>
-            <h2>Вход в приложение</h2>
-            <div asp-validation-summary="ModelOnly"></div>
-            <div class="formslabel">
-                <label asp-for="UserName"></label><br />
-                <input asp-for="UserName" />
-                <span asp-validation-for="UserName"></span>
-            </div>
-            <div class="formslabel">
-                <label asp-for="Password"></label><br />
-                <input asp-for="Password" />
-                <span asp-validation-for="Password"></span>
-            </div>
-            <div class="forms__bottom">
+<form class="forms" method="post" asp-controller="Account" asp-action="Login"
+      asp-route-returnUrl="@Model.ReturnUrl">
+    <div>
+        <h2>Вход в приложение</h2>
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="formslabel">
+            <label asp-for="UserName"></label><br />
+            <input asp-for="UserName" />
+            <span asp-validation-for="UserName"></span>
+        </div>
+        <div class="formslabel">
+            <label asp-for="Password"></label><br />
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div class="forms__bottom">
             <div class="formslabel">
                 <label asp-for="RememberMe"></label><br />
                 <input asp-for="RememberMe" />
@@ -26,12 +26,12 @@
             <div>
             </div>
 
-                @if (Model.EmailConfigm == true)
-                {
-                    <a asp-controller="Account" asp-action="RequestEmail">Запрос подтверждения Email</a>
-                }
+            @if (Model.EmailConfigm == true)
+            {
+                <a asp-controller="Account" asp-action="RequestEmail">Запрос подтверждения Email</a>
+            }
 
-                <a asp-controller="Account" asp-action="ForgotPassword">Восстановление пароля</a>
-            </div>
+            <a asp-controller="Account" asp-action="ForgotPassword">Восстановление пароля</a>
         </div>
-    </form>
+    </div>
+</form>

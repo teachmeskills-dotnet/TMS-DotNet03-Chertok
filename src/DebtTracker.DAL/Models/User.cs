@@ -3,7 +3,7 @@
 namespace DebtTracker.DAL.Models
 {
     /// <summary>
-    /// User
+    /// User.
     /// </summary>
     public class User : IdentityUser
     {

@@ -1,5 +1,8 @@
 ﻿namespace DebtTracker.Web.Models
 {
+    /// <summary>
+    /// User profile model.
+    /// </summary>
     public class UserProfileModel
     {
         /// <inheritdoc/>

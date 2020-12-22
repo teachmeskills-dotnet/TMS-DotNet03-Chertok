@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace DebtTracker.DAL.Models
 {
     /// <summary>
-    /// Groups
+    /// Groups.
     /// </summary>
     public class Groups : IHasDbIdentity
     {

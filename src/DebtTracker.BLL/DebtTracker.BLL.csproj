@@ -5,12 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DebtTracker.Common\DebtTracker.Common.csproj" />
-    <ProjectReference Include="..\DebtTracker.DAL\DebtTracker.DAL.csproj" />
+    <Compile Remove="Managers\**" />
+    <EmbeddedResource Remove="Managers\**" />
+    <None Remove="Managers\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Managers\" />
+    <ProjectReference Include="..\DebtTracker.Common\DebtTracker.Common.csproj" />
+    <ProjectReference Include="..\DebtTracker.DAL\DebtTracker.DAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>

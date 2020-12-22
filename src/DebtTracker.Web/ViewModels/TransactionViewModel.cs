@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace DebtTracker.Web.ViewModels
 {
+    /// <summary>
+    /// Transaction view model.
+    /// </summary>
     public class TransactionViewModel
     {
         /// <summary>

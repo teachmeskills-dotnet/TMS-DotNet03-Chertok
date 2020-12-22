@@ -1,0 +1,94 @@
+﻿@model GroupViewModel
+
+<div>
+    <h1>@Model.Title</h1>
+    @if (Model.Description != null)
+    {
+        <p>Комментарий: @Model.Description</p>
+    }
+    <p>
+        Для добавления пользователя в группу попросите перейти его по ссылке:
+        @Model.GroupUrl
+    </p>
+</div>
+
+<div class="indent__margin-bottom">
+    <a asp-controller="Group" asp-action="Edit" asp-route-id="@Model.Id">
+        <input class="button" type="button" value="Редактировать" />
+    </a>
+    <a asp-controller="Transaction" asp-action="Create" asp-route-id="@Model.Id">
+        <input class="button" type="button" value="Добавить платеж" />
+    </a>
+    <a class="groupicon" asp-controller="Group" asp-action="Index">
+        <input class="button" type="button" value="К группам" />
+    </a>
+</div>
+
+<div class="groupdetail__wrapper">
+    <div class="firstsection">
+        <div class="userlist">
+            <p>Список участников группы:</p>
+            @foreach (var profile in Model.Profiles)
+            {
+                <div class="group__user">@profile.FirstName @profile.LastName @profile.MiddleName</div>
+            }
+        </div>
+        <div class="userssumm">
+            @foreach (var payment in Model.Scores)
+            {
+                <div>@payment.FirstNameCreditor @payment.LastNameCreditor</div>
+                <div>Внесено платежей на сумму: @payment.Summ</div>
+            }
+        </div>
+    </div>
+    <div class="transactionlist">
+        @foreach (var transaction in Model.Transactions.Reverse())
+        {
+
+            var statusMainClass = transaction.Status
+            ? "transaction"
+            : "transaction_red";
+
+            var commentMainClass = !transaction.Status
+            ? "Не внесено ниодного пользователя"
+            : "";
+
+            <form class="@statusMainClass" asp-controller="Group" asp-action="Index">
+                <div class="group_transaction_detail">
+                    <a asp-controller="Transaction" asp-action="Index" asp-route-id="@transaction.Id">
+                        <span>@transaction.Description</span>
+                    </a>
+
+                    @if (transaction.Comment != null)
+                    {
+                        <p>Комментарий: @transaction.Comment; Сумма: @transaction.Amount <br />@commentMainClass</p>
+                    }
+                    else
+                    {
+                        <p>Сумма: @transaction.Amount @commentMainClass</p>
+                    }
+                </div>
+                <div class="group__action">
+                    <a asp-controller="Transaction" asp-action="Index" asp-route-id="@transaction.Id">
+                        <img title="Просмотр" src="/images/group_Show.svg" />
+                    </a>
+                    <a asp-controller="Transaction" asp-action="Delete" asp-route-transactionId="@transaction.Id">
+                        <img title="Удалить" src="/images/transaction_action_Delete.svg" />
+                    </a>
+                </div>
+            </form>
+
+        }
+    </div>
+
+    <div class="usersscore">
+        @foreach (var score in Model.UsersScore)
+        {
+            <div>@score.LastNameDebitor @score.FirstNameDebitor @score.MiddleNameDebitor должен @score.LastNameCreditor @score.FirstNameCreditor @score.MiddleNameCreditor сумму в размере @score.Summ</div>
+        }
+    </div>
+</div>
+
+@section css {
+    <link href="~/css/group.css" rel="stylesheet" asp-append-version="true" />
+}

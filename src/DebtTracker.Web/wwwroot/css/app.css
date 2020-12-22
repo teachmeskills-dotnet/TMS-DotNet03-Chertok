@@ -1,0 +1,207 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Lobster", sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+html {
+    margin: 0;
+}
+
+body {
+    height: auto;
+    width: auto;
+    text-align: center;
+    top: 20%;
+    height: 100%;
+    background: url("../images/road.jpg") no-repeat;
+    background-size: cover;
+    min-height: 360pt;
+}
+
+.header {
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3%;
+}
+
+label {
+    margin-top: 30px;
+}
+
+.wrapper {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.logo {
+    width: 108px;
+    height: 24px;
+    top: 0px;
+    margin-left: 5%;
+}
+
+.account {
+    width: 308px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 5%;
+}
+
+.profile {
+    left: 0%;
+    width: 208px;
+    height: 25px;
+    top: 1px;
+    background: url("../images/Profile.svg") no-repeat;
+    border: none;
+}
+
+    .profile:hover {
+        background: url("../images/Profile_click.svg") no-repeat;
+    }
+
+.register {
+    left: 0%;
+    width: 208px;
+    height: 25px;
+    top: 1px;
+    background: url("../images/Account_register.svg") no-repeat;
+    border: none;
+}
+
+    .register:hover {
+        background: url("../images/Account_register_click.svg") no-repeat;
+    }
+/*.login {
+    left: 70%;
+    width: 108px;
+    height: 25px;
+    top: 1px;
+}*/
+
+.login {
+    left: 70%;
+    width: 98px;
+    height: 25px;
+    top: 1px;
+    background: url(/images/Account_enter.svg);
+    border: none;
+}
+
+    .login:hover {
+        background: url(/images/Account_enter_click.svg);
+    }
+
+.accountbottom {
+    cursor: pointer;
+    padding: 6px 16px;
+    background: #006CFF;
+    border-radius: 3px;
+    border: none;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+
+.accountbottomexit {
+    width: 98px;
+    height: 24px;
+    right: 50px;
+    top: 1px;
+    background: url(/images/Account_exit.svg);
+    border: none;
+}
+
+    .accountbottomexit:hover {
+        background: url(/images/Account_exit_click.svg)
+    }
+
+.forms {
+    margin: auto;
+    margin-top: 10%;
+    padding: 20px;
+    width: 40%;
+    text-align: left;
+    margin-left: 40%;
+}
+
+.greeting {
+    margin: auto;
+    margin-top: 10%;
+    padding: 20px;
+}
+
+.groupicon {
+    margin: 0 auto;
+    margin-top: 10%;
+}
+
+.button {
+    cursor: pointer;
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10%;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 1.3px;
+    color: rgb(2, 61, 61);
+    margin: 10px;
+}
+
+    .button:hover {
+        background: #559dff;
+    }
+
+.formslabel {
+    margin: 8px;
+}
+
+.forms__bottom {
+    margin-right: auto;
+    width: 190px;
+    text-align: center;
+}
+
+.wrapper_profile {
+    display: flex;
+    margin-top: 5%;
+    padding: 40px;
+}
+
+.changeprofile {
+    display: grid;
+    align-items: center;
+    text-align: left;
+}
+
+.formprofile {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.a_element {
+    display: flex;
+}
+
+.a_text {
+    margin-left: 3pt;
+}
+
+.text_greeting {
+    color: rgb(120, 95, 161);
+}

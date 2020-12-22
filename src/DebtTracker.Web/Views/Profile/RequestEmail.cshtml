@@ -1,0 +1,15 @@
+﻿@model RequestEmailViewModels
+
+<form class="forms" method="post" asp-controller="Profile" asp-action="RequestEmail">
+    <h2>Сформировать новый запрос на подтверждение Email</h2>
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        <label asp-for="UserName"></label><br />
+        <input asp-for="UserName" />
+        <span asp-validation-for="UserName"></span>
+    </div>
+
+    <div>
+        <input type="submit" value="Отправить" />
+    </div>
+</form>

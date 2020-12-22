@@ -1,0 +1,26 @@
+﻿@model TransactionActionViewModel
+
+<h1>Добавление платежа</h1>
+<form class="forms" method="post" asp-controller="Transaction" asp-action="Create">
+    <input type="hidden" value="@Model.GroupId" name="GroupId" />
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="formslabel">
+        <input id="description" class="input" asp-for="Description" placeholder="Наименование" type="text" />
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div class="formslabel">
+        <input id="comment" class="input" asp-for="Comment" placeholder="Комментарий" type="text" />
+        <span asp-validation-for="Comment"></span>
+    </div>
+    <div class="formslabel">
+        <input id="amount" class="input" asp-for="Amount" placeholder="Amount" />
+        <span asp-validation-for="Amount"></span>
+    </div>
+    <div class="formslabel">
+        <button id="button_confirm" class="button" type="submit">Добавить</button>
+    </div>
+</form>
+
+@section css {
+    <link href="~/css/transactions.css" rel="stylesheet" asp-append-version="true" />
+}

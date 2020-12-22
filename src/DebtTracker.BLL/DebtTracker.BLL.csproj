@@ -5,8 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Managers\**" />
+    <EmbeddedResource Remove="Managers\**" />
+    <None Remove="Managers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DebtTracker.Common\DebtTracker.Common.csproj" />
     <ProjectReference Include="..\DebtTracker.DAL\DebtTracker.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.9.0" />
   </ItemGroup>
 
 </Project>

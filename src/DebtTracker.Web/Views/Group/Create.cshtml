@@ -1,0 +1,22 @@
+﻿@model GroupActionViewModel
+
+<h1 class="indent__margin-bottom">Добавить новую группу</h1>
+
+<form class="forms" method="post" asp-controller="Group" asp-action="Create">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="indent__margin-bottom">
+        <input id="title" class="input" asp-for="Title" placeholder="Название" type="text" />
+        <span asp-validation-for="Title"></span>
+    </div>
+    <div class="indent__margin-bottom">
+        <input id="description" class="input" asp-for="Description" placeholder="Комментарий" type="text" />
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div class="indent__margin-bottom">
+        <button id="button_confirm" class="button" type="submit">Добавить</button>
+    </div>
+</form>
+
+@section css {
+    <link href="~/css/group.css" rel="stylesheet" asp-append-version="true" />
+}

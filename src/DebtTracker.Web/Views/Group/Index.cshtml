@@ -1,0 +1,32 @@
+﻿@model IEnumerable<GroupViewModel>
+
+<div class="indent__margin-bottom">
+    <a asp-controller="Group" asp-action="Create">
+        <input class="button button__link button__orange" type="button" value="Добавить группу" />
+    </a>
+</div>
+
+@if (Model.Any())
+{
+
+    foreach (var group in Model.Reverse())
+    {
+        <div class="group group__indent-bottom" title="@group.Description">
+            <a class="group__text" asp-controller="Group" asp-action="Detail" asp-route-id="@group.Id">
+                <span class="group__text">@group.Title</span>
+            </a>
+
+            <a class="group__watch" asp-controller="Group" asp-action="Detail" asp-route-id="@group.Id">
+                <img title="Просмотр" src="/images/group_Show.svg" />
+            </a>
+        </div>
+    }
+}
+else
+{
+    <h1>Список групп пуст</h1>
+}
+
+@section css {
+    <link href="~/css/group.css" rel="stylesheet" asp-append-version="true" />
+}
